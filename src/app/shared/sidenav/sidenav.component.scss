@@ -1,0 +1,78 @@
+:host {
+  .sidenav-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .sidenav-is-mobile {
+    .sidenav-toolbar {
+      position: fixed;
+      z-index: 2;
+    }
+  }
+
+  .mobile-sidenav-container {
+    flex: 1;
+  }
+
+  .sidenav-is-mobile {
+    .mobile-sidenav-container {
+      flex: 1 0 auto;
+    }
+  }
+
+  .align-row-items-center {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  .margin-right-1 {
+    margin-right: 0.2em;
+  }
+
+  mat-nav-list {
+    div {
+      h4 {
+        margin-left: 0.5em;
+      }
+    }
+  }
+
+  h1.logo {
+    margin-left: 3px;
+    letter-spacing: 1px;
+    font-weight: 700;
+    font-size: 36px !important;
+    font-family: "Poppins", sans-serif;
+    color: var(--primary);
+    cursor: pointer;
+  }
+
+  .nav-spacer {
+    flex: 1 1 auto;
+  }
+
+  mat-menu {
+    button {
+      mat-icon {
+        color: var(--mat-icon-color-primary) !important;
+      }
+    }
+  }
+
+  mat-icon {
+    color: var(--mat-icon-color-primary);
+  }
+
+}
+
+.mat-mdc-menu-item .mat-icon-no-color {
+  color: var(--mat-icon-color-primary) !important;
+}

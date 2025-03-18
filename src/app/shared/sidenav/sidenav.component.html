@@ -1,0 +1,67 @@
+<div class="sidenav-container" [class.sidenav-is-mobile]="isMobile()">
+  <mat-toolbar class="sidenav-toolbar">
+    <button mat-icon-button (click)="snav.toggle()">
+      <mat-icon>drag_handle</mat-icon>
+    </button>
+    <h1 class="logo" routerLink="/dashboard" routerLinkActive="active">
+      uboard
+    </h1>
+    <span class="nav-spacer"></span>
+    <button
+      mat-button
+      [matMenuTriggerFor]="menu"
+      aria-label="User profile actions"
+    >
+      <div class="align-row-items-center">
+        <img
+          class="margin-right-1"
+          src="{{ userInSessionData()?.avatarUrl }}"
+          alt="User profile avatar"
+          height="30px"
+        />
+        {{ userInSessionData()?.fullName }}
+        <mat-icon mat-icon-button>arrow_drop_down</mat-icon>
+      </div>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="logout()">
+        <mat-icon class="menu-item-color">logout</mat-icon>
+        <span>Encerrar sessão</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <mat-sidenav-container
+    class="mobile-sidenav-container"
+    [style.marginTop.px]="isMobile() ? 56 : 0"
+  >
+    <mat-sidenav
+      #snav
+      [mode]="isMobile() ? 'over' : 'side'"
+      [fixedInViewport]="isMobile()"
+      fixedTopGap="56"
+      [class.mat-nav-when-mobile]="isMobile()"
+      [style.width.px]="230"
+    >
+      <mat-nav-list>
+        @for (navItem of navItems(); track navItem) {
+        <a
+          mat-list-item
+          routerLink="{{ navItem.href }}"
+          routerLinkActive="active"
+          (click)="snav.toggle()"
+        >
+          <div class="align-row-items-center">
+            <mat-icon mat-list-icon>{{ navItem.icon }}</mat-icon>
+            <h4>{{ navItem.label }}</h4>
+          </div>
+        </a>
+        }
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content [class.sidenav-is-mobile]="isMobile()">
+      <router-outlet />
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
