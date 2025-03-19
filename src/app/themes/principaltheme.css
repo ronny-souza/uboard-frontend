@@ -3,6 +3,16 @@ html {
   /* COLOR SYSTEM VARIABLES */
   color-scheme: light;
 
+  --primary: #FE6C38;
+  --secondary: #F4F1F2;
+  --black: #10101A;
+  --black-secondary: #2A2A30;
+  --grey: #686E73;
+  --white: #FFF;
+
+  --mdc-text-button-label-text-color: #FFF;
+  --mat-text-button-icon-spacing: 0;
+
   /* Primary palette variables */
   --mat-sys-primary: light-dark(#FE6C38, #ffb59d);
   --mat-sys-on-primary: light-dark(#ffffff, #5d1800);
@@ -61,6 +71,7 @@ html {
   --mat-sys-on-error-container: light-dark(#410002, #ffdad6);
 
   /* Neutral variant palette variables */
+  --mdc-filled-text-field-container-color: light-dark(#F4F1F2, #F4F1F2);
   --mat-sys-surface-variant: light-dark(#ffdbd0, #59413a);
   --mat-sys-on-surface-variant: light-dark(#59413a, #e1bfb5);
   --mat-sys-neutral-variant20: light-dark(#412b24, #412b24); /* Variable used for the sidenav scrim (container background shadow when opened) */
