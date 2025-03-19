@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { SidenavComponent } from "../../shared/sidenav/sidenav.component";
 import { RouterModule } from '@angular/router';
+import { SidenavComponent } from '../../features/sidenav/sidenav.component';
 
 @Component({
   selector: 'app-layout',

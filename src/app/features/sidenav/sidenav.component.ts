@@ -6,11 +6,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { NavItem } from '../models/nav-item.model';
 import { RouterModule } from '@angular/router';
 import Keycloak from 'keycloak-js';
-import { User } from '../models/user.model';
-
+import { NavItem } from '../../core/models/nav-item.model';
+import { User } from '../../core/models/user.model';
 @Component({
   selector: 'app-sidenav',
   imports: [
