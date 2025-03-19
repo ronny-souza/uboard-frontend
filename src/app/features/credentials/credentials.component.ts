@@ -1,14 +1,15 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Credentials } from '../../shared/models/credentials.model';
 import { v4 as uuidv4 } from 'uuid';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { DatePipe } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { Credentials } from '../../core/models/credentials.model';
+import { CustomInputFilterComponent } from '../../shared/components/custom-input-filter/custom-input-filter.component';
+import { EmptyTableMessageComponent } from '../../shared/components/empty-table-message/empty-table-message.component';
+import { UboardButtonComponent } from "../../shared/components/uboard-button/uboard-button.component";
 
 @Component({
   selector: 'app-credentials',
@@ -16,17 +17,18 @@ import { MatButtonModule } from '@angular/material/button';
     MatTableModule,
     MatPaginatorModule,
     DatePipe,
-    MatFormFieldModule,
-    MatInputModule,
     MatCardModule,
     MatIcon,
-    MatButtonModule
-  ],
+    MatButtonModule,
+    CustomInputFilterComponent,
+    EmptyTableMessageComponent,
+    UboardButtonComponent
+],
   templateUrl: './credentials.component.html',
   styleUrl: './credentials.component.scss',
 })
 export class CredentialsComponent implements AfterViewInit {
-  displayedColumns: string[] = ['name', 'type', 'createdAt'];
+  displayedColumns: string[] = ['name', 'type', 'createdAt', 'actions'];
   credentialsTableDataSource = new MatTableDataSource<Credentials>(
     ELEMENT_DATA
   );
@@ -37,13 +39,16 @@ export class CredentialsComponent implements AfterViewInit {
     this.credentialsTableDataSource.paginator = this.paginator;
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.credentialsTableDataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter(value: string) {
+    this.credentialsTableDataSource.filter = value.trim().toLowerCase();
 
     if (this.credentialsTableDataSource.paginator) {
       this.credentialsTableDataSource.paginator.firstPage();
     }
+  }
+
+  hasItems() {
+    return this.credentialsTableDataSource.paginator?.length;
   }
 }
 
