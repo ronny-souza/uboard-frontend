@@ -1,0 +1,9 @@
+<mat-form-field>
+  <mat-label>{{ label }}</mat-label>
+  <input
+    matInput
+    (keyup)="onFilter($event)"
+    [placeholder]="placeholder"
+    #input
+  />
+</mat-form-field>
