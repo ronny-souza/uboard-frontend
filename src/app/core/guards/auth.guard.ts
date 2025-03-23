@@ -11,6 +11,7 @@ const isAccessAllowed = async (
   __: RouterStateSnapshot,
   authData: AuthGuardData
 ): Promise<boolean | UrlTree> => {
+
   const { authenticated, keycloak } = authData;
 
   if (!authenticated) {
@@ -20,5 +21,5 @@ const isAccessAllowed = async (
   return true;
 };
 
-export const canActivateAuthRole =
+export const canActivateAuth =
   createAuthGuard<CanActivateFn>(isAccessAllowed);
