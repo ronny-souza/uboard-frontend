@@ -4,7 +4,7 @@ import { PageTitleComponent } from '../../../shared/components/page-title/page-t
 import { MatCardModule } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { CreateRoomDialog } from './dialogs/create-room-dialog';
+import { CreateRoomDialog } from './dialogs/create-room/create-room-dialog';
 import { Router } from '@angular/router';
 
 @Component({
