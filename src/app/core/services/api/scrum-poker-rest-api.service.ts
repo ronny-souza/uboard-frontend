@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ScrumPokerVote } from '../../models/scrum-poker-vote.model';
+import { ScrumPokerVote } from '../../models/scrum-poker-rooms/scrum-poker-vote.model';
+import { ScrumPokerRoomData } from '../../models/scrum-poker-rooms/srcum-poker-room-data.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,12 @@ export class ScrumPokerRestApiService {
   listRoomVotes(roomId: string): Observable<ScrumPokerVote[]> {
     return this.httpClient.get<ScrumPokerVote[]>(
       `${this.baseUrl}/room/${roomId}/votes`
+    );
+  }
+
+  getScrumPokerRoom(roomId: string): Observable<ScrumPokerRoomData> {
+    return this.httpClient.get<ScrumPokerRoomData>(
+      `${this.baseUrl}/room/${roomId}`
     );
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Client } from '@stomp/stompjs';
 import { BehaviorSubject } from 'rxjs';
-import { ScrumPokerVote } from '../../models/scrum-poker-vote.model';
+import { ScrumPokerVote } from '../../models/scrum-poker-rooms/scrum-poker-vote.model';
 import { environment } from '../../../../environments/environment';
 import { ScrumPokerRestApiService } from '../api/scrum-poker-rest-api.service';
 

@@ -40,12 +40,11 @@ import {
   styleUrl: './credentials.component.scss',
 })
 export class CredentialsComponent implements AfterViewInit {
-  private _snackBar = inject(MatSnackBar);
   displayedColumns: string[] = ['name', 'url', 'type', 'createdAt', 'actions'];
   credentials: RemoteRepositoryCredentials[] = ELEMENT_DATA;
-  credentialsTableDataSource = new MatTableDataSource<RemoteRepositoryCredentials>(
-    this.credentials
-  );
+  credentialsTableDataSource = new MatTableDataSource<RemoteRepositoryCredentials>(this.credentials);
+
+  private _snackBar = inject(MatSnackBar);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
