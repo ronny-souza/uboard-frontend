@@ -1,7 +1,7 @@
 import Keycloak from 'keycloak-js';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ScrumPokerService } from '../../../core/services/scrum-poker.service';
+import { ScrumPokerRoomWebSocketService } from '../../../core/services/websocket/scrum-poker-room.websocket.service';
 import { PageTitleComponent } from '../../../shared/components/page-title/page-title.component';
 import { MatButtonModule } from '@angular/material/button';
 import { ScrumPokerVote } from '../../../core/models/scrum-poker-vote.model';
@@ -39,7 +39,7 @@ export class ScrumPokerRoomComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private scrumPokerService: ScrumPokerService,
+    private scrumPokerRoomWebSocketService: ScrumPokerRoomWebSocketService,
     private httpClient: HttpClient
   ) {}
 
@@ -60,13 +60,13 @@ export class ScrumPokerRoomComponent implements OnInit {
       },
     });
 
-    this.scrumPokerService.connect(
+    this.scrumPokerRoomWebSocketService.connect(
       this.userIdentifier,
       this.username,
       this.roomId
     );
 
-    this.scrumPokerService.votes$.subscribe((votes) => {
+    this.scrumPokerRoomWebSocketService.votes$.subscribe((votes) => {
       console.log(votes);
       this.votes = votes;
       this.votesTableDataSource.data = [...this.votes];
@@ -83,7 +83,7 @@ export class ScrumPokerRoomComponent implements OnInit {
 
   submitVote(vote: string): void {
     if (vote) {
-      this.scrumPokerService.sendVote(
+      this.scrumPokerRoomWebSocketService.publishUserVote(
         this.userIdentifier,
         this.username,
         this.roomId,
@@ -99,6 +99,6 @@ export class ScrumPokerRoomComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.scrumPokerService.disconnect();
+    this.scrumPokerRoomWebSocketService.disconnect();
   }
 }

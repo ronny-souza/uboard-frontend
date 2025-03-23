@@ -1,6 +1,7 @@
 export const environment = {
   production: false,
   uboardApiUrl: 'http://localhost:8080',
+  webSocketUrl: 'ws://localhost:8080/ws',
   keycloak: {
     realm: 'uboard',
     url: 'http://localhost:8181',
