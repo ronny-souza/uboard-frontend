@@ -7,34 +7,38 @@ import {
   UserActivityService,
   withAutoRefreshToken,
 } from 'keycloak-angular';
+import { environment } from '../environments/environment';
 
-const localhostCondition =
+const includeBearerTokenOnRequestsCondition =
   createInterceptorCondition<IncludeBearerTokenCondition>({
-    urlPattern: /^(http:\/\/localhost:(8080|8181))(\/.*)?$/i,
+    urlPattern: environment.keycloak.urlConditionForBearerToken,
   });
 
 export const keycloakInitializer = () =>
   provideKeycloak({
     config: {
-      realm: 'uboard',
-      url: 'http://localhost:8181',
-      clientId: 'uboard-frontend',
+      realm: environment.keycloak.realm,
+      url: environment.keycloak.url,
+      clientId: environment.keycloak.clientId,
     },
+
     initOptions: {
       silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
     },
+
     features: [
       withAutoRefreshToken({
         onInactivityTimeout: 'logout',
         sessionTimeout: 60000,
       }),
     ],
+
     providers: [
       AutoRefreshTokenService,
       UserActivityService,
       {
         provide: INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
-        useValue: [localhostCondition],
+        useValue: [includeBearerTokenOnRequestsCondition],
       },
     ],
   });
