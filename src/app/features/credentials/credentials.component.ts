@@ -7,18 +7,18 @@ import { DatePipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Credentials } from '../../core/models/credentials.model';
+import { RemoteRepositoryCredentials } from '../../core/models/credentials/remote-repository-credentials.model';
 import { CustomInputFilterComponent } from '../../shared/components/custom-input-filter/custom-input-filter.component';
 import { EmptyTableMessageComponent } from '../../shared/components/empty-table-message/empty-table-message.component';
 import { UboardButtonComponent } from '../../shared/components/uboard-button/uboard-button.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterModule } from '@angular/router';
+import { PageTitleComponent } from '../../shared/components/page-title/page-title.component';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
-import { RouterModule } from '@angular/router';
-import { PageTitleComponent } from '../../shared/components/page-title/page-title.component';
 
 @Component({
   selector: 'app-credentials',
@@ -42,8 +42,8 @@ import { PageTitleComponent } from '../../shared/components/page-title/page-titl
 export class CredentialsComponent implements AfterViewInit {
   private _snackBar = inject(MatSnackBar);
   displayedColumns: string[] = ['name', 'url', 'type', 'createdAt', 'actions'];
-  credentials: Credentials[] = ELEMENT_DATA;
-  credentialsTableDataSource = new MatTableDataSource<Credentials>(
+  credentials: RemoteRepositoryCredentials[] = ELEMENT_DATA;
+  credentialsTableDataSource = new MatTableDataSource<RemoteRepositoryCredentials>(
     this.credentials
   );
 
@@ -65,7 +65,7 @@ export class CredentialsComponent implements AfterViewInit {
     return this.credentialsTableDataSource.paginator?.length;
   }
 
-  deleteCredential(credential: Credentials) {
+  deleteCredential(credential: RemoteRepositoryCredentials) {
     Swal.fire({
       title: 'Tem certeza?',
       text: 'Ao confirmar, não será possível recuperar a credencial excluída.',
@@ -90,6 +90,7 @@ export class CredentialsComponent implements AfterViewInit {
   }
 
   openDeleteCredentialSuccessSnackBar(credentialName: string) {
+    // Candidato a componente
     const horizontalPosition: MatSnackBarHorizontalPosition = 'end';
     const verticalPosition: MatSnackBarVerticalPosition = 'top';
     const content = `Sua solicitação para a exclusão da credencial ${credentialName} foi enviada com sucesso!`;
@@ -101,7 +102,7 @@ export class CredentialsComponent implements AfterViewInit {
   }
 }
 
-const ELEMENT_DATA: Credentials[] = [
+const ELEMENT_DATA: RemoteRepositoryCredentials[] = [
   {
     uuid: uuidv4(),
     name: 'Gitlab Public Credentials 1',
