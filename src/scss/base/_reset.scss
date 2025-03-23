@@ -22,7 +22,7 @@ p {
   color: var(--mat-sys-on-primary) !important;
 }
 
-.button-primary {
+.button-primary, .button-danger {
   mat-icon {
     color: var(--white) !important;
   }
