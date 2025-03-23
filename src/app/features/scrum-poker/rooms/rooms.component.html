@@ -1,0 +1,21 @@
+<section class="container">
+  <app-page-title
+    title="Votação"
+    description="Gerencie suas últimas salas de votação ou inicie uma nova."
+  ></app-page-title>
+
+  <mat-card appearance="outlined" class="rooms-table">
+    <mat-card-content>
+      <div class="new-room-button">
+        <button
+          mat-fab
+          extended
+          class="button-primary"
+          (click)="openCreateRoomDialog()"
+        >
+          <mat-icon>add</mat-icon> Nova sala
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>

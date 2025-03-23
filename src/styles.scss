@@ -1,2 +1,11 @@
+@use '@angular/material' as mat;
 @use "scss/_index";
 @import "./app/themes/principaltheme.css";
+
+
+:root {
+  @include mat.snack-bar-overrides((
+    container-color: var(--primary),
+    supporting-text-color: var(--white),
+  ));
+}

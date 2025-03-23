@@ -1,0 +1,68 @@
+<section class="container">
+  <app-page-title
+    title="{{ roomName }}"
+    description="Identificador da sala: {{ roomId }}"
+  ></app-page-title>
+
+  @for(availablePoint of availablePoints; track availablePoint) {
+  <button
+    mat-fab
+    extended
+    class="button-primary"
+    (click)="submitVote(availablePoint)"
+  >
+    {{ availablePoint }}
+  </button>
+  }
+
+  <div class="container">
+    <mat-card appearance="outlined" class="voters-table">
+      <mat-card-content>
+        <div class="show-hide-votes-button">
+          @if (isShowVotes()) {
+          <button
+            mat-fab
+            extended
+            class="button-primary"
+            (click)="displayOrHideVotes()"
+          >
+            <mat-icon>visibility_off</mat-icon> Esconder votos
+          </button>
+          } @else {
+          <button
+            mat-fab
+            extended
+            class="button-primary"
+            (click)="displayOrHideVotes()"
+          >
+            <mat-icon>visibility</mat-icon> Exibir votos
+          </button>
+          }
+        </div>
+
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="votesTableDataSource">
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Usuário</th>
+              <td mat-cell *matCellDef="let element">{{ element.username }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="vote">
+              <th mat-header-cell *matHeaderCellDef>Voto</th>
+              <td mat-cell *matCellDef="let element">
+                @if (!isShowVotes()) {
+                <mat-icon>checked_circle</mat-icon>
+                } @else if (isShowVotes()) {
+                {{ element.vote != null && element.vote ? element.vote : "-" }}
+                }
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>

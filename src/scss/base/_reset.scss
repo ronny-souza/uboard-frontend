@@ -21,6 +21,18 @@ p {
   background-color: var(--mat-sys-primary) !important;
   color: var(--mat-sys-on-primary) !important;
 }
+
+.button-primary {
+  mat-icon {
+    color: var(--white) !important;
+  }
+}
+
+.button-secondary {
+  background-color: var(--grey) !important;
+  color: var(--white) !important;
+}
+
 .mat-mdc-menu-content {
   background-color: var(--white) !important;
 }

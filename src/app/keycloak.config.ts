@@ -10,7 +10,7 @@ import {
 
 const localhostCondition =
   createInterceptorCondition<IncludeBearerTokenCondition>({
-    urlPattern: /^(http:\/\/localhost:8181)(\/.*)?$/i,
+    urlPattern: /^(http:\/\/localhost:(8080|8181))(\/.*)?$/i,
   });
 
 export const keycloakInitializer = () =>

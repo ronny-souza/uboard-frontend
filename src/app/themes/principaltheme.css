@@ -76,8 +76,11 @@ html {
   --mat-sys-on-surface-variant: light-dark(#59413a, #e1bfb5);
   --mat-sys-neutral-variant20: light-dark(#412b24, #412b24); /* Variable used for the sidenav scrim (container background shadow when opened) */
 
-  --mat-icon-color: light-dark(#FFF, #FFF);
+  --mat-icon-color: light-dark(#FE6C38, #FE6C38);
   --mat-icon-color-primary: light-dark(#FE6C38, #FFF);
+
+  --mat-filled-button-icon-spacing: 0;
+  --mat-filled-button-icon-offset: 0;
   /* --mat-toolbar-container-background-color: light-dark(#EDEDED, #FFF);
   --mat-sidenav-container-background-color: light-dark(#EDEDED, #FFF); */
 

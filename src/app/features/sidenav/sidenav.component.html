@@ -13,12 +13,17 @@
       aria-label="User profile actions"
     >
       <div class="align-row-items-center">
-        <img
-          class="margin-right-1"
-          src="{{ userInSessionData()?.avatarUrl }}"
-          alt="User profile avatar"
-          height="30px"
-        />
+        @if (!hasErrorOnGetAvatarImage()) {
+          <img
+            class="margin-right-1"
+            src="{{ userInSessionData()?.avatarUrl }}"
+            alt="User profile avatar"
+            (error)="whenHasErrorGettingProfileImage()"
+            height="30px"
+          />
+        } @else {
+          <mat-icon mat-icon-button class="profile-icon">account_circle</mat-icon>
+        }
         {{ userInSessionData()?.fullName }}
         <mat-icon mat-icon-button>arrow_drop_down</mat-icon>
       </div>

@@ -1,5 +1,5 @@
 import Swal from 'sweetalert2';
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { v4 as uuidv4 } from 'uuid';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -12,6 +12,13 @@ import { CustomInputFilterComponent } from '../../shared/components/custom-input
 import { EmptyTableMessageComponent } from '../../shared/components/empty-table-message/empty-table-message.component';
 import { UboardButtonComponent } from '../../shared/components/uboard-button/uboard-button.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+import { RouterModule } from '@angular/router';
+import { PageTitleComponent } from '../../shared/components/page-title/page-title.component';
 
 @Component({
   selector: 'app-credentials',
@@ -26,11 +33,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     EmptyTableMessageComponent,
     UboardButtonComponent,
     MatTooltipModule,
+    RouterModule,
+    PageTitleComponent,
   ],
   templateUrl: './credentials.component.html',
   styleUrl: './credentials.component.scss',
 })
 export class CredentialsComponent implements AfterViewInit {
+  private _snackBar = inject(MatSnackBar);
   displayedColumns: string[] = ['name', 'url', 'type', 'createdAt', 'actions'];
   credentials: Credentials[] = ELEMENT_DATA;
   credentialsTableDataSource = new MatTableDataSource<Credentials>(
@@ -73,8 +83,20 @@ export class CredentialsComponent implements AfterViewInit {
         if (indexToRemove !== -1) {
           this.credentials.splice(indexToRemove, 1);
           this.credentialsTableDataSource.data = [...this.credentials];
+          this.openDeleteCredentialSuccessSnackBar(credential.name);
         }
       }
+    });
+  }
+
+  openDeleteCredentialSuccessSnackBar(credentialName: string) {
+    const horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+    const verticalPosition: MatSnackBarVerticalPosition = 'top';
+    const content = `Sua solicitação para a exclusão da credencial ${credentialName} foi enviada com sucesso!`;
+    this._snackBar.open(content, 'X', {
+      horizontalPosition: horizontalPosition,
+      verticalPosition: verticalPosition,
+      duration: 5000,
     });
   }
 }

@@ -34,6 +34,12 @@ export class SidenavComponent implements OnDestroy {
     },
 
     {
+      label: 'Votação',
+      icon: 'scoreboard',
+      href: '/scrum-poker/rooms',
+    },
+
+    {
       label: 'Credenciais',
       icon: 'vpn_key',
       href: '/credentials',
@@ -53,6 +59,8 @@ export class SidenavComponent implements OnDestroy {
 
   private readonly keycloak = inject(Keycloak);
   readonly userInSessionData = signal<User | null>(null);
+
+  private hasErrorGettingAvatarImage: boolean = false;
 
   constructor() {
     const media = inject(MediaMatcher);
@@ -75,13 +83,22 @@ export class SidenavComponent implements OnDestroy {
         }`,
         firstName: userProfile.firstName || '',
         lastName: userProfile.lastName || '',
-        avatarUrl: `https://avatar.iran.liara.run/username?username=${userProfile.firstName}+${userProfile.lastName}`,
+        avatarUrl: `https://avatar.iran.liara.run/username?username=${userProfile.firstName}+${userProfile.lastName}` || '',
       });
     }
   }
 
+
   ngOnDestroy(): void {
     this._mobileQuery.removeEventListener('change', this._mobileQueryListener);
+  }
+
+  whenHasErrorGettingProfileImage() {
+    this.hasErrorGettingAvatarImage = true;
+  }
+
+  hasErrorOnGetAvatarImage () {
+    return this.hasErrorGettingAvatarImage;
   }
 
   logout() {
