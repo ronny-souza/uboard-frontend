@@ -59,6 +59,12 @@ export class ScrumPokerRoomComponent implements OnInit {
       this.votes = votes;
       this.votesTableDataSource.data = [...this.votes];
     });
+
+    this.scrumPokerRoomWebSocketService.roomVotesVisibility$.subscribe(
+      (isVotesVisible) => {
+        this.areVotesBeingDisplayed = isVotesVisible;
+      }
+    );
   }
 
   ngOnDestroy(): void {
@@ -71,6 +77,10 @@ export class ScrumPokerRoomComponent implements OnInit {
 
   changeDisplayStatusOfVotes() {
     this.areVotesBeingDisplayed = !this.areVotesBeingDisplayed;
+    this.scrumPokerRoomWebSocketService.publishRoomVotesVisibilityChange(
+      this.roomId,
+      this.areVotesBeingDisplayed
+    );
   }
 
   submitVote(vote: string): void {
@@ -94,6 +104,7 @@ export class ScrumPokerRoomComponent implements OnInit {
     this.scrumPokerRestApiService.getScrumPokerRoom(this.roomId).subscribe({
       next: (response) => {
         this.roomName = response.name || 'Nome não encontrado';
+        this.areVotesBeingDisplayed = response.isVotesVisible;
       },
 
       error: (error) => {
