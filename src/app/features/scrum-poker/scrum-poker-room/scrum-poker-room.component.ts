@@ -10,6 +10,9 @@ import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { UboardKeycloakService } from '../../../core/services/uboard-keycloak.service';
 import { ScrumPokerRestApiService } from '../../../core/services/api/scrum-poker-rest-api.service';
+import { ScrumPokerRoomData } from '../../../core/models/scrum-poker-rooms/srcum-poker-room-data.model';
+import { User } from '../../../core/models/user.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-scrum-poker-room',
@@ -20,20 +23,32 @@ import { ScrumPokerRestApiService } from '../../../core/services/api/scrum-poker
     MatTableModule,
     MatIcon,
     MatProgressSpinnerModule,
+    CommonModule,
   ],
   templateUrl: './scrum-poker-room.component.html',
   styleUrl: './scrum-poker-room.component.scss',
 })
 export class ScrumPokerRoomComponent implements OnInit {
   roomId!: string;
-  roomName!: string;
-  username: string = '';
-  private userIdentifier = '';
   votes: ScrumPokerVote[] = [];
   areVotesBeingDisplayed: boolean = false;
   availablePoints: string[] = ['0', '1', '2', '3', '5', '8', '13', '21'];
   displayedColumns: string[] = ['name', 'vote'];
   votesTableDataSource = new MatTableDataSource<ScrumPokerVote>(this.votes);
+
+  scrumPokerRoomData: ScrumPokerRoomData = {
+    uuid: '',
+    name: '',
+    userIdentifier: '',
+    closed: false,
+    createdAt: new Date(),
+    isVotesVisible: false,
+  };
+
+  currentUser: User = {
+    id: '',
+    username: '',
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -50,8 +65,8 @@ export class ScrumPokerRoomComponent implements OnInit {
     this.getCurrentScrumPokerRoomData();
 
     this.scrumPokerRoomWebSocketService.connect(
-      this.userIdentifier,
-      this.username,
+      this.currentUser.id,
+      this.currentUser.username,
       this.roomId
     );
 
@@ -86,8 +101,8 @@ export class ScrumPokerRoomComponent implements OnInit {
   submitVote(vote: string): void {
     if (vote) {
       this.scrumPokerRoomWebSocketService.publishUserVote(
-        this.userIdentifier,
-        this.username,
+        this.currentUser.id,
+        this.currentUser.username,
         this.roomId,
         vote
       );
@@ -95,16 +110,14 @@ export class ScrumPokerRoomComponent implements OnInit {
   }
 
   private async getSessionUserData() {
-    const user = await this.uboardKeycloakService.getSessionUserProfileData();
-    this.userIdentifier = user.id || '';
-    this.username = user.username || '';
+    this.currentUser = await this.uboardKeycloakService.getSessionUser();
   }
 
   private getCurrentScrumPokerRoomData() {
     this.scrumPokerRestApiService.getScrumPokerRoom(this.roomId).subscribe({
       next: (response) => {
-        this.roomName = response.name || 'Nome não encontrado';
-        this.areVotesBeingDisplayed = response.isVotesVisible;
+        this.scrumPokerRoomData = response;
+        this.areVotesBeingDisplayed = this.scrumPokerRoomData.isVotesVisible;
       },
 
       error: (error) => {
@@ -112,5 +125,15 @@ export class ScrumPokerRoomComponent implements OnInit {
         this.router.navigate(['/scrum-poker/rooms']);
       },
     });
+  }
+
+  canViewVotesToggle(): boolean {
+    return (
+      !!this.currentUser &&
+      !!this.currentUser.id &&
+      !!this.scrumPokerRoomData &&
+      !!this.scrumPokerRoomData.userIdentifier &&
+      this.scrumPokerRoomData.userIdentifier === this.currentUser.id
+    );
   }
 }

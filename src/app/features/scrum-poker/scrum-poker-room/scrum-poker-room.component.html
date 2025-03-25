@@ -1,7 +1,7 @@
 <section class="container">
   <app-page-title
-    title="{{ roomName }}"
-    description="Identificador da sala: {{ roomId }}"
+    title="{{ scrumPokerRoomData.name }}"
+    description="Identificador da sala: {{ scrumPokerRoomData.uuid }}"
   ></app-page-title>
 
   @for(availablePoint of availablePoints; track availablePoint) {
@@ -18,7 +18,7 @@
   <div class="container">
     <mat-card appearance="outlined" class="voters-table">
       <mat-card-content>
-        <div class="show-hide-votes-button">
+        <div class="show-hide-votes-button" *ngIf="canViewVotesToggle()">
           @if (areVotesDisplayed()) {
           <button
             mat-fab
