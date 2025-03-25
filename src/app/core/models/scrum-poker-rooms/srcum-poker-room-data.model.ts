@@ -3,6 +3,7 @@ export interface ScrumPokerRoomData {
   name: string;
   createdAt: Date;
   closed: boolean;
-  closedAt: Date;
+  closedAt?: Date;
+  userIdentifier: string;
   isVotesVisible: boolean;
 }
