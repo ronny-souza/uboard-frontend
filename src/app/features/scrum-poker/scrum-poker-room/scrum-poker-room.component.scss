@@ -7,3 +7,22 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.container {
+  .header-items {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.closing-room {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10%;
+
+  mat-spinner {
+    margin-right: 10px;
+  }
+}

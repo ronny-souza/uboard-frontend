@@ -28,6 +28,11 @@ p {
   }
 }
 
+.button-danger {
+  background: var(--mat-sys-error) !important;
+  color: var(--white) !important;
+}
+
 .button-secondary {
   background-color: var(--grey) !important;
   color: var(--white) !important;

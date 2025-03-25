@@ -20,6 +20,12 @@ export class ScrumPokerRoomWebSocketService {
   private roomVotesVisibilitySubject = new BehaviorSubject<boolean>(false);
   roomVotesVisibility$ = this.roomVotesVisibilitySubject.asObservable();
 
+  private scrumPokerRoomClosedStateSubject = new BehaviorSubject<boolean>(
+    false
+  );
+  scrumPokerRoomClosedState$ =
+    this.scrumPokerRoomClosedStateSubject.asObservable();
+
   constructor(private scrumPokerRestApiService: ScrumPokerRestApiService) {}
 
   connect(userIdentifier: string, username: string, roomId: string): void {
@@ -33,17 +39,23 @@ export class ScrumPokerRoomWebSocketService {
         });
 
         this.stompClient.onConnect = () => {
-          this.publishUserVote(userIdentifier, username, roomId, null);
+          this.publishScrumPokerRoomUserVoteEvent(
+            userIdentifier,
+            username,
+            roomId,
+            null
+          );
           this.onAddRoomVotesListener(roomId);
           this.onUserLeftScrumPokerRoomListener(roomId);
           this.onAddRoomVotesVisibilityListener(roomId);
+          this.onScrumPokerClosedStateChangeListener(roomId);
         };
 
         this.stompClient.activate();
       });
   }
 
-  publishUserVote(
+  publishScrumPokerRoomUserVoteEvent(
     userIdentifier: string,
     username: string,
     roomIdentifier: string,
@@ -58,7 +70,7 @@ export class ScrumPokerRoomWebSocketService {
     }
   }
 
-  publishRoomVotesVisibilityChange(
+  publishScrumPokerRoomVotesVisibilityChangeEvent(
     roomIdentifier: string,
     isRoomVotesVisible: boolean
   ) {
@@ -66,6 +78,27 @@ export class ScrumPokerRoomWebSocketService {
       this.stompClient.publish({
         destination: `${this.webSocketAppPrefix}${this.webSocketEndpointPrefix}/${roomIdentifier}/toggle-votes`,
         body: JSON.stringify(isRoomVotesVisible),
+      });
+    }
+  }
+
+  publishScrumPokerRoomUserDisconnectEvent(
+    roomIdentifier: string,
+    userIdentifier: string
+  ) {
+    return this.stompClient.publish({
+      destination: `${this.webSocketAppPrefix}${this.webSocketEndpointPrefix}/${roomIdentifier}/user/${userIdentifier}`,
+    });
+  }
+
+  publishCloseScrumPokerRoomEvent(
+    roomIdentifier: string,
+    userIdentifier: string
+  ) {
+    if (this.stompClient && this.stompClient.connected) {
+      this.stompClient.publish({
+        destination: `${this.webSocketAppPrefix}${this.webSocketEndpointPrefix}/${roomIdentifier}/close`,
+        body: userIdentifier,
       });
     }
   }
@@ -117,6 +150,16 @@ export class ScrumPokerRoomWebSocketService {
       (message) => {
         const isRoomVotesVisible: boolean = JSON.parse(message.body);
         this.roomVotesVisibilitySubject.next(isRoomVotesVisible);
+      }
+    );
+  }
+
+  private onScrumPokerClosedStateChangeListener(roomId: string) {
+    this.stompClient.subscribe(
+      `${this.webSocketEndpointPrefix}/${roomId}/is-closed`,
+      (message) => {
+        const isRoomClosed: boolean = JSON.parse(message.body);
+        this.scrumPokerRoomClosedStateSubject.next(isRoomClosed);
       }
     );
   }

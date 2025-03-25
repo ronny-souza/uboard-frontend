@@ -88,7 +88,7 @@ export class CredentialsComponent implements AfterViewInit {
     });
   }
 
-  openDeleteCredentialSuccessSnackBar(credentialName: string) {
+  private openDeleteCredentialSuccessSnackBar(credentialName: string) {
     // Candidato a componente
     const horizontalPosition: MatSnackBarHorizontalPosition = 'end';
     const verticalPosition: MatSnackBarVerticalPosition = 'top';

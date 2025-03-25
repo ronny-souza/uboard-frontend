@@ -1,24 +1,44 @@
+@if (!scrumPokerRoomData.closed && roomIsAvailable) {
 <section class="container">
-  <app-page-title
-    title="{{ scrumPokerRoomData.name }}"
-    description="Identificador da sala: {{ scrumPokerRoomData.uuid }}"
-  ></app-page-title>
+  <div class="header-items">
+    <div>
+      <app-page-title
+        title="{{ scrumPokerRoomData.name }}"
+        description="Identificador da sala: {{ scrumPokerRoomData.uuid }}"
+      ></app-page-title>
+    </div>
+    <div *ngIf="canViewAdministratorActions()">
+      <button
+        mat-fab
+        extended
+        class="button-danger"
+        (click)="openCloseScrumPokerRoomRequest()"
+      >
+        <mat-icon>cancel</mat-icon> Encerrar sala
+      </button>
+    </div>
+  </div>
 
-  @for(availablePoint of availablePoints; track availablePoint) {
-  <button
-    mat-fab
-    extended
-    class="button-primary"
-    (click)="submitVote(availablePoint)"
-  >
-    {{ availablePoint }}
-  </button>
-  }
+  <div class="container">
+    @for(availablePoint of availablePoints; track availablePoint) {
+    <button
+      mat-fab
+      extended
+      class="button-primary"
+      (click)="submitVote(availablePoint)"
+    >
+      {{ availablePoint }}
+    </button>
+    }
+  </div>
 
   <div class="container">
     <mat-card appearance="outlined" class="voters-table">
       <mat-card-content>
-        <div class="show-hide-votes-button" *ngIf="canViewVotesToggle()">
+        <div
+          class="show-hide-votes-button"
+          *ngIf="canViewAdministratorActions()"
+        >
           @if (areVotesDisplayed()) {
           <button
             mat-fab
@@ -69,3 +89,18 @@
     </mat-card>
   </div>
 </section>
+} @else if (scrumPokerRoomData.closed ){
+
+<div class="closing-room">
+  <mat-spinner diameter="32"></mat-spinner>
+  <h1>Fechamento da sala em progresso...</h1>
+</div>
+} @else if (!roomIsAvailable) {
+<div class="closing-room">
+  <mat-spinner diameter="32"></mat-spinner>
+  <h1>
+    A sala não existe ou foi fechada por um administrador. Você será
+    redirecionado em breve...
+  </h1>
+</div>
+}
