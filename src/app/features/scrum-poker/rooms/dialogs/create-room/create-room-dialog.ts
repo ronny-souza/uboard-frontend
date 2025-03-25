@@ -1,39 +1,21 @@
-import { Component, inject, model } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormErrorStateMatcher } from '../../../../../core/utils/form-error-state-matcher';
 import {
   FormBuilder,
-  FormControl,
-  FormGroupDirective,
   FormsModule,
-  NgForm,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
 import {
   MatDialogActions,
-  MatDialogClose,
   MatDialogContent,
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { HttpClient } from '@angular/common/http';
-import { ErrorStateMatcher } from '@angular/material/core';
-
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: FormControl | null,
-    form: FormGroupDirective | NgForm | null
-  ): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(
-      control &&
-      control.invalid &&
-      (control.dirty || control.touched || isSubmitted)
-    );
-  }
-}
+import { ScrumPokerRestApiService } from '../../../../../core/services/api/scrum-poker-rest-api.service';
 
 @Component({
   selector: 'create-room',
@@ -60,16 +42,13 @@ export class CreateRoomDialog {
     }
   );
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private scrumPokerRestApiService: ScrumPokerRestApiService) {}
 
   createScrumPokerRoom() {
-    const body = {
-      name: this.createScrumPokerRoomForm.get('name')?.value,
-      userIdentifier: '1234',
-    };
+    const name = this.createScrumPokerRoomForm.get('name')?.value;
 
-    this.httpClient
-      .post<any>('http://localhost:8080/scrum-poker/room', body)
+    this.scrumPokerRestApiService
+      .createScrumPokerRoom(name || 'Minha Sala')
       .subscribe({
         next: (response) => {
           this.dialogRef.close({
@@ -85,7 +64,7 @@ export class CreateRoomDialog {
       });
   }
 
-  matcher = new MyErrorStateMatcher();
+  matcher = new FormErrorStateMatcher();
 
   onNoClick(): void {
     this.dialogRef.close();
