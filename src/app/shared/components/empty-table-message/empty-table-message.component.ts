@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-empty-table-message',
