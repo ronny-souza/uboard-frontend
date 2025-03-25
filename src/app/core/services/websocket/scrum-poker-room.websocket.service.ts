@@ -34,8 +34,9 @@ export class ScrumPokerRoomWebSocketService {
 
         this.stompClient.onConnect = () => {
           this.publishUserVote(userIdentifier, username, roomId, null);
-          this.addRoomVotesListener(roomId);
-          this.addRoomVotesVisibilityListener(roomId);
+          this.onAddRoomVotesListener(roomId);
+          this.onUserLeftScrumPokerRoomListener(roomId);
+          this.onAddRoomVotesVisibilityListener(roomId);
         };
 
         this.stompClient.activate();
@@ -75,7 +76,20 @@ export class ScrumPokerRoomWebSocketService {
     }
   }
 
-  private addRoomVotesListener(roomId: string) {
+  private onUserLeftScrumPokerRoomListener(roomId: string) {
+    this.stompClient.subscribe(
+      `${this.webSocketEndpointPrefix}/${roomId}/user-left`,
+      (message) => {
+        this.scrumPokerRestApiService
+          .listRoomVotes(roomId)
+          .subscribe((currentVotes) => {
+            this.votesSubject.next(currentVotes);
+          });
+      }
+    );
+  }
+
+  private onAddRoomVotesListener(roomId: string) {
     this.stompClient.subscribe(
       `${this.webSocketEndpointPrefix}/${roomId}/votes`,
       (message) => {
@@ -97,7 +111,7 @@ export class ScrumPokerRoomWebSocketService {
     );
   }
 
-  private addRoomVotesVisibilityListener(roomId: string) {
+  private onAddRoomVotesVisibilityListener(roomId: string) {
     this.stompClient.subscribe(
       `${this.webSocketEndpointPrefix}/${roomId}/votes-visibility`,
       (message) => {
