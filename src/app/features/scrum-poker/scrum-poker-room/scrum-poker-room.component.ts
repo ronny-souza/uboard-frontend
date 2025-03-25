@@ -83,7 +83,16 @@ export class ScrumPokerRoomComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.scrumPokerRoomWebSocketService.disconnect();
+    this.scrumPokerRestApiService
+      .deleteScrumPokerRoomUser(this.roomId, this.currentUser.id)
+      .subscribe({
+        next: (response) => {
+          this.scrumPokerRoomWebSocketService.disconnect();
+        },
+        error: (error) => {
+          this.scrumPokerRoomWebSocketService.disconnect();
+        },
+      });
   }
 
   areVotesDisplayed(): boolean {

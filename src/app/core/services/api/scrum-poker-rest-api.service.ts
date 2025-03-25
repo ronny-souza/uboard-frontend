@@ -36,8 +36,17 @@ export class ScrumPokerRestApiService {
           name,
           userIdentifier: user.id,
         };
-        return this.httpClient.post<ScrumPokerRoomData>(`${this.baseUrl}/room`, body);
+        return this.httpClient.post<ScrumPokerRoomData>(
+          `${this.baseUrl}/room`,
+          body
+        );
       })
+    );
+  }
+
+  deleteScrumPokerRoomUser(roomIdentifier: string, userIdentifier: string) {
+    return this.httpClient.delete(
+      `${this.baseUrl}/room/${roomIdentifier}/user/${userIdentifier}`
     );
   }
 }
