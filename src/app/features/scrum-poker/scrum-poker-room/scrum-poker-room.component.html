@@ -7,28 +7,26 @@
         description="Identificador da sala: {{ scrumPokerRoomData.uuid }}"
       ></app-page-title>
     </div>
-    <div *ngIf="canViewAdministratorActions()">
+    <div *ngIf="canViewAdministratorActions()" class="administrator-actions">
       <button
         mat-fab
         extended
-        class="button-danger"
-        (click)="openCloseScrumPokerRoomRequest()"
+        class="button-primary"
+        (click)="openBottomSheet()"
       >
-        <mat-icon>cancel</mat-icon> Encerrar sala
+        <mat-icon>arrow_drop_down</mat-icon> Ações
       </button>
     </div>
   </div>
 
-  <div class="container">
+  <div class="container available-points">
     @for(availablePoint of availablePoints; track availablePoint) {
-    <button
-      mat-fab
-      extended
-      class="button-primary"
-      (click)="submitVote(availablePoint)"
+    <app-vote-card
+      [value]="availablePoint"
+      [selected]="currentVote === availablePoint"
+      (voteSelected)="submitVote($event)"
     >
-      {{ availablePoint }}
-    </button>
+    </app-vote-card>
     }
   </div>
 

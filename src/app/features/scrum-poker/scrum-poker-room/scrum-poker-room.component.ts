@@ -14,11 +14,17 @@ import { ScrumPokerRoomData } from '../../../core/models/scrum-poker-rooms/srcum
 import { User } from '../../../core/models/user.model';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+import { VoteCardComponent } from '../../../shared/components/vote-card/vote-card.component';
+import {
+  MatBottomSheet,
+  MatBottomSheetModule,
+} from '@angular/material/bottom-sheet';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
+import { ScrumPokerRoomActionsComponent } from './actions/scrum-poker-room-actions/scrum-poker-room-actions.component';
 
 @Component({
   selector: 'app-scrum-poker-room',
@@ -30,12 +36,15 @@ import {
     MatIcon,
     MatProgressSpinnerModule,
     CommonModule,
+    VoteCardComponent,
+    MatBottomSheetModule,
   ],
   templateUrl: './scrum-poker-room.component.html',
   styleUrl: './scrum-poker-room.component.scss',
 })
 export class ScrumPokerRoomComponent implements OnInit {
   private _snackBar = inject(MatSnackBar);
+  private _bottomSheet = inject(MatBottomSheet);
   roomId!: string;
   votes: ScrumPokerVote[] = [];
   areVotesBeingDisplayed: boolean = false;
@@ -43,6 +52,7 @@ export class ScrumPokerRoomComponent implements OnInit {
   displayedColumns: string[] = ['name', 'vote'];
   votesTableDataSource = new MatTableDataSource<ScrumPokerVote>(this.votes);
   roomIsAvailable: boolean = true;
+  currentVote: string = '-';
 
   scrumPokerRoomData: ScrumPokerRoomData = {
     uuid: '',
@@ -78,32 +88,9 @@ export class ScrumPokerRoomComponent implements OnInit {
       this.roomId
     );
 
-    this.scrumPokerRoomWebSocketService.votes$.subscribe((votes) => {
-      this.votes = votes;
-      this.votesTableDataSource.data = [...this.votes];
-    });
-
-    this.scrumPokerRoomWebSocketService.roomVotesVisibility$.subscribe(
-      (isVotesVisible) => {
-        this.areVotesBeingDisplayed = isVotesVisible;
-      }
-    );
-
-    this.scrumPokerRoomWebSocketService.scrumPokerRoomClosedState$.subscribe(
-      (isRoomClosed) => {
-        this.scrumPokerRoomData.closed = isRoomClosed;
-
-        if (this.scrumPokerRoomData.closed) {
-          this.openSnackBarWithMessage(
-            `Atenção, usuário! A sala ${this.scrumPokerRoomData.name} foi encerrada. Você será redirecionado em breve para suas salas.`
-          );
-
-          setTimeout(() => {
-            this.router.navigate(['/scrum-poker/rooms']);
-          }, 5000);
-        }
-      }
-    );
+    this.subscribeOnVotesSocketToListen();
+    this.subscribeOnVisibilityVotesSocketToListen();
+    this.subscribeOnScrumPokerRoomStateSocketToListen();
   }
 
   ngOnDestroy(): void {
@@ -128,6 +115,10 @@ export class ScrumPokerRoomComponent implements OnInit {
 
   submitVote(vote: string): void {
     if (vote) {
+      if (vote === this.currentVote) {
+        vote = '-';
+      }
+      this.currentVote = vote;
       this.scrumPokerRoomWebSocketService.publishScrumPokerRoomUserVoteEvent(
         this.currentUser.id,
         this.currentUser.username,
@@ -135,6 +126,18 @@ export class ScrumPokerRoomComponent implements OnInit {
         vote
       );
     }
+  }
+
+  openBottomSheet(): void {
+    const bottomSheetRef = this._bottomSheet.open(
+      ScrumPokerRoomActionsComponent
+    );
+
+    bottomSheetRef.afterDismissed().subscribe((action) => {
+      if (action === 'CLOSE_ROOM') {
+        this.openCloseScrumPokerRoomRequest();
+      }
+    });
   }
 
   openCloseScrumPokerRoomRequest() {
@@ -197,6 +200,44 @@ export class ScrumPokerRoomComponent implements OnInit {
       !!this.scrumPokerRoomData &&
       !!this.scrumPokerRoomData.userIdentifier &&
       this.scrumPokerRoomData.userIdentifier === this.currentUser.id
+    );
+  }
+
+  private subscribeOnVotesSocketToListen() {
+    this.scrumPokerRoomWebSocketService.votes$.subscribe((votes) => {
+      this.votes = votes;
+      this.currentVote =
+        this.votes.find((vote) => vote.userIdentifier === this.currentUser.id)
+          ?.vote || '-';
+      this.votesTableDataSource.data = [...this.votes];
+    });
+  }
+
+  private subscribeOnVisibilityVotesSocketToListen() {
+    this.scrumPokerRoomWebSocketService.roomVotesVisibility$.subscribe(
+      (isVotesVisible) => {
+        this.areVotesBeingDisplayed = isVotesVisible;
+      }
+    );
+  }
+
+  private subscribeOnScrumPokerRoomStateSocketToListen() {
+    this.scrumPokerRoomWebSocketService.scrumPokerRoomClosedState$.subscribe(
+      (scrumPokerRoomState) => {
+        this.scrumPokerRoomData.closed =
+          this.roomId === scrumPokerRoomState.roomId &&
+          scrumPokerRoomState.closed;
+
+        if (this.scrumPokerRoomData.closed) {
+          this.openSnackBarWithMessage(
+            `Atenção, usuário! A sala ${this.scrumPokerRoomData.name} foi encerrada. Você será redirecionado em breve para suas salas.`
+          );
+
+          setTimeout(() => {
+            this.router.navigate(['/scrum-poker/rooms']);
+          }, 5000);
+        }
+      }
     );
   }
 

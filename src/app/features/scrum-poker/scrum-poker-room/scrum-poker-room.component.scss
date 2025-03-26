@@ -26,3 +26,15 @@
     margin-right: 10px;
   }
 }
+
+.available-points {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.administrator-actions {
+  display: flex;
+  gap: 10px;
+}
