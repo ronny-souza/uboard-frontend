@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ScrumPokerVote } from '../../models/scrum-poker-rooms/scrum-poker-vote.model';
 import { environment } from '../../../../environments/environment';
 import { ScrumPokerRestApiService } from '../api/scrum-poker-rest-api.service';
+import { ScrumPokerRoomState } from '../../models/scrum-poker-rooms/scrum-poker-room-state.model';
 
 @Injectable({
   providedIn: 'root',
@@ -20,9 +21,8 @@ export class ScrumPokerRoomWebSocketService {
   private roomVotesVisibilitySubject = new BehaviorSubject<boolean>(false);
   roomVotesVisibility$ = this.roomVotesVisibilitySubject.asObservable();
 
-  private scrumPokerRoomClosedStateSubject = new BehaviorSubject<boolean>(
-    false
-  );
+  private scrumPokerRoomClosedStateSubject =
+    new BehaviorSubject<ScrumPokerRoomState>({ roomId: '', closed: false });
   scrumPokerRoomClosedState$ =
     this.scrumPokerRoomClosedStateSubject.asObservable();
 
@@ -159,7 +159,10 @@ export class ScrumPokerRoomWebSocketService {
       `${this.webSocketEndpointPrefix}/${roomId}/is-closed`,
       (message) => {
         const isRoomClosed: boolean = JSON.parse(message.body);
-        this.scrumPokerRoomClosedStateSubject.next(isRoomClosed);
+        this.scrumPokerRoomClosedStateSubject.next({
+          roomId: roomId,
+          closed: isRoomClosed,
+        });
       }
     );
   }
