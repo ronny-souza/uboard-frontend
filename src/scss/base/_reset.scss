@@ -45,10 +45,20 @@ p {
   background-color: var(--white) !important;
 }
 
+span.mdc-list-item__content {
+  padding-top: 5px !important;
+}
+
 :root {
   @include mat.bottom-sheet-overrides(
     (
-      container-background-color: #FFF,
+      container-background-color: #fff,
+    )
+  );
+
+  @include mat.table-overrides(
+    (
+      row-item-outline-color: #ccc,
     )
   );
 }

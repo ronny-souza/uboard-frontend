@@ -3,6 +3,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormErrorStateMatcher } from '../../../../../core/utils/form-error-state-matcher';
+import { ScrumPokerRestApiService } from '../../../../../core/services/api/scrum-poker-rest-api.service';
+import { SnackBarService } from '../../../../../core/services/snack-bar.service.service';
 import {
   FormBuilder,
   FormsModule,
@@ -15,7 +17,6 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
-import { ScrumPokerRestApiService } from '../../../../../core/services/api/scrum-poker-rest-api.service';
 
 @Component({
   selector: 'create-room',
@@ -42,7 +43,10 @@ export class CreateRoomDialog {
     }
   );
 
-  constructor(private scrumPokerRestApiService: ScrumPokerRestApiService) {}
+  constructor(
+    private scrumPokerRestApiService: ScrumPokerRestApiService,
+    private snackBarService: SnackBarService
+  ) {}
 
   createScrumPokerRoom() {
     const name = this.createScrumPokerRoomForm.get('name')?.value;
@@ -51,6 +55,9 @@ export class CreateRoomDialog {
       .createScrumPokerRoom(name || 'Minha Sala')
       .subscribe({
         next: (response) => {
+          this.snackBarService.openSnackBar(
+            `Atenção, usuário! Sua sala foi criada com sucesso e você será redirecionado para ela.`
+          );
           this.dialogRef.close({
             name: response.name,
             uuid: response.uuid,
@@ -59,6 +66,9 @@ export class CreateRoomDialog {
 
         error: (error) => {
           console.error(error);
+          this.snackBarService.openSnackBar(
+            `Atenção, usuário! Houve um erro em sua solicitação para a criação de uma nova sala.`
+          );
           this.dialogRef.close();
         },
       });

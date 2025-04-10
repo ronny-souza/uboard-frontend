@@ -24,9 +24,7 @@ export class RoomsComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.router.navigate([`/scrum-poker/rooms/${result.uuid}`], {
-        state: { roomName: result.name },
-      });
+      this.router.navigate([`/scrum-poker/rooms/${result.uuid}`]);
     });
   }
 }
