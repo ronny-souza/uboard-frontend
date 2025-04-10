@@ -15,16 +15,12 @@ import { User } from '../../../core/models/user.model';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { VoteCardComponent } from '../../../shared/components/vote-card/vote-card.component';
+import { ScrumPokerRoomActionsComponent } from './actions/scrum-poker-room-actions/scrum-poker-room-actions.component';
+import { SnackBarService } from '../../../core/services/snack-bar.service.service';
 import {
   MatBottomSheet,
   MatBottomSheetModule,
 } from '@angular/material/bottom-sheet';
-import {
-  MatSnackBar,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
-import { ScrumPokerRoomActionsComponent } from './actions/scrum-poker-room-actions/scrum-poker-room-actions.component';
 
 @Component({
   selector: 'app-scrum-poker-room',
@@ -43,7 +39,6 @@ import { ScrumPokerRoomActionsComponent } from './actions/scrum-poker-room-actio
   styleUrl: './scrum-poker-room.component.scss',
 })
 export class ScrumPokerRoomComponent implements OnInit {
-  private _snackBar = inject(MatSnackBar);
   private _bottomSheet = inject(MatBottomSheet);
   roomId!: string;
   votes: ScrumPokerVote[] = [];
@@ -73,7 +68,8 @@ export class ScrumPokerRoomComponent implements OnInit {
     private router: Router,
     private scrumPokerRoomWebSocketService: ScrumPokerRoomWebSocketService,
     private uboardKeycloakService: UboardKeycloakService,
-    private scrumPokerRestApiService: ScrumPokerRestApiService
+    private scrumPokerRestApiService: ScrumPokerRestApiService,
+    private snackBarService: SnackBarService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -158,7 +154,7 @@ export class ScrumPokerRoomComponent implements OnInit {
           this.currentUser.id
         );
 
-        this.openSnackBarWithMessage(
+        this.snackBarService.openSnackBar(
           `Sua solicitação para o fechamento da sala ${this.scrumPokerRoomData.name} foi enviada com sucesso!`
         );
 
@@ -183,7 +179,7 @@ export class ScrumPokerRoomComponent implements OnInit {
       error: (error) => {
         console.error(error);
         this.roomIsAvailable = false;
-        this.openSnackBarWithMessage(
+        this.snackBarService.openSnackBar(
           'Atenção, usuário! A sala não existe ou foi fechada por seu administrador. Você será redirecionado de volta às suas salas.'
         );
         setTimeout(() => {
@@ -229,7 +225,7 @@ export class ScrumPokerRoomComponent implements OnInit {
           scrumPokerRoomState.closed;
 
         if (this.scrumPokerRoomData.closed) {
-          this.openSnackBarWithMessage(
+          this.snackBarService.openSnackBar(
             `Atenção, usuário! A sala ${this.scrumPokerRoomData.name} foi encerrada. Você será redirecionado em breve para suas salas.`
           );
 
@@ -239,17 +235,5 @@ export class ScrumPokerRoomComponent implements OnInit {
         }
       }
     );
-  }
-
-  private openSnackBarWithMessage(message: string) {
-    // Candidato a componente
-    const horizontalPosition: MatSnackBarHorizontalPosition = 'end';
-    const verticalPosition: MatSnackBarVerticalPosition = 'top';
-    const content = message;
-    this._snackBar.open(content, 'X', {
-      horizontalPosition: horizontalPosition,
-      verticalPosition: verticalPosition,
-      duration: 5000,
-    });
   }
 }

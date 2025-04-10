@@ -69,7 +69,7 @@
               <th mat-header-cell *matHeaderCellDef>Pontuação</th>
               <td mat-cell *matCellDef="let element">
                 @if (!areVotesDisplayed() && element.vote != null &&
-                element.vote) {
+                element.vote && element.vote !== '-') {
                 <mat-icon>checked_circle</mat-icon>
                 } @else if (areVotesDisplayed()) {
                 {{ element.vote != null && element.vote ? element.vote : "-" }}
