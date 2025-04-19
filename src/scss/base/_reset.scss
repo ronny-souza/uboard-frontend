@@ -19,11 +19,6 @@ p {
   font-size: 16px !important;
 }
 
-.button-primary {
-  background-color: var(--mat-sys-primary) !important;
-  color: var(--mat-sys-on-primary) !important;
-}
-
 .button-primary,
 .button-danger {
   mat-icon {
@@ -45,7 +40,7 @@ p {
   background-color: var(--white) !important;
 }
 
-span.mdc-list-item__content {
+.room-actions span.mdc-list-item__content {
   padding-top: 5px !important;
 }
 
