@@ -1,0 +1,9 @@
+<p-button
+  [ngClass]="['button-' + buttonStyle]"
+  [severity]="buttonStyle"
+  label="{{ label | translate }}"
+  [raised]="true"
+  routerLinkActive="active"
+>
+  <mat-icon>{{ icon }}</mat-icon>
+</p-button>
