@@ -1,11 +1,37 @@
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 @use "scss/_index";
 @import "./app/themes/principaltheme.css";
-
+@import "primeicons/primeicons.css";
 
 :root {
-  @include mat.snack-bar-overrides((
-    container-color: var(--primary),
-    supporting-text-color: var(--white),
-  ));
+  --p-button-primary-background: var(--primary) !important;
+  --p-button-primary-border-color: var(--primary) !important;
+  --p-button-primary-active-background: var(--primary-hover) !important;
+  --p-button-primary-active-border-color: var(--primary-hover) !important;
+  --p-button-primary-hover-background: var(--primary-hover) !important;
+  --p-button-primary-hover-border-color: var(--primary-hover) !important;
+  --p-progressbar-value-background: var(--primary) !important;
+  --p-badge-success-background: var(--success) !important;
+  --p-inputtext-focus-border-color: var(--primary) !important;
+  --p-inputtext-focus-ring-shadow: none !important;
+  --p-inputtext-hover-border-color: var(--primary) !important;
+  --p-select-hover-border-color: var(--primary) !important;
+  --p-select-focus-border-color: var(--primary) !important;
+  --p-select-focus-ring-shadow: none !important;
+  --p-datatable-header-cell-background: var(--white) !important;
+  --p-checkbox-hover-border-color: var(--primary) !important;
+  --p-checkbox-checked-background: var(--primary) !important;
+  --p-checkbox-checked-border-color: var(--primary) !important;
+  --p-checkbox-focus-border-color: var(--primary) !important;
+  --p-checkbox-checked-focus-border-color: var(--primary) !important;
+  --p-checkbox-checked-hover-border-color: var(--primary-hover) !important;
+  --p-checkbox-checked-hover-background: var(--primary-hover) !important;
+  --p-progressbar-height: 18px !important;
+
+  @include mat.snack-bar-overrides(
+    (
+      container-color: var(--primary),
+      supporting-text-color: var(--white),
+    )
+  );
 }

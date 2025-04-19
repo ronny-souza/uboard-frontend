@@ -6,6 +6,7 @@ import { CredentialsComponent } from './features/credentials/credentials.compone
 import { canActivateAuth } from './core/guards/auth.guard';
 import { RoomsComponent } from './features/scrum-poker/rooms/rooms.component';
 import { ScrumPokerRoomComponent } from './features/scrum-poker/scrum-poker-room/scrum-poker-room.component';
+import { TasksComponent } from './features/tasks/tasks.component';
 
 export const routes: Routes = [
   {
@@ -23,15 +24,17 @@ export const routes: Routes = [
         component: DashboardComponent,
       },
       {
-        path: 'settings',
-        component: SettingsComponent,
-      },
-
-      {
         path: 'credentials',
         component: CredentialsComponent,
       },
-
+      {
+        path: 'tasks',
+        component: TasksComponent,
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent,
+      },
       {
         path: 'scrum-poker/rooms',
         component: RoomsComponent,

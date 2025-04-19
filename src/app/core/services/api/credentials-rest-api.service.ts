@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CreateRemoteRepositoryCredentials } from '../../models/credentials/create-remote-repository-credentials.model';
 import { RemoteRepositoryCredentials } from '../../models/credentials/remote-repository-credentials.model';
 import { Page } from '../../models/page.model';
+import { CredentialsFilter } from '../../models/credentials/credentials-filter.model';
 
 @Injectable({
   providedIn: 'root',
@@ -16,10 +17,20 @@ export class CredentialsRestApiService {
 
   listCredentialsAsPage(
     page: number,
-    size: number
+    size: number,
+    filters: CredentialsFilter = {}
   ): Observable<Page<RemoteRepositoryCredentials>> {
+    let params = new HttpParams().set('page', page).set('size', size);
+
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        params = params.set(key, value.toString());
+      }
+    });
+
     return this.httpClient.get<Page<RemoteRepositoryCredentials>>(
-      `${this.baseUrl}?page=${page}&size=${size}`
+      this.baseUrl,
+      { params }
     );
   }
 

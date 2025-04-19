@@ -14,21 +14,25 @@
     >
       <div class="align-row-items-center">
         @if (!hasErrorOnGetAvatarImage()) {
-          <img
-            class="margin-right-1"
-            src="{{ userInSessionData()?.avatarUrl }}"
-            alt="User profile avatar"
-            (error)="whenHasErrorGettingProfileImage()"
-            height="30px"
-          />
+        <img
+          class="margin-right-1"
+          src="{{ userInSessionData()?.avatarUrl }}"
+          alt="User profile avatar"
+          (error)="whenHasErrorGettingProfileImage()"
+          height="30px"
+        />
         } @else {
-          <mat-icon mat-icon-button class="profile-icon">account_circle</mat-icon>
+        <mat-icon mat-icon-button class="profile-icon">account_circle</mat-icon>
         }
         {{ userInSessionData()?.fullName }}
         <mat-icon mat-icon-button>arrow_drop_down</mat-icon>
       </div>
     </button>
     <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon class="menu-item-color">settings</mat-icon>
+        <span>Configurações</span>
+      </button>
       <button mat-menu-item (click)="logout()">
         <mat-icon class="menu-item-color">logout</mat-icon>
         <span>Encerrar sessão</span>

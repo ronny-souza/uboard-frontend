@@ -1,0 +1,64 @@
+{
+  "commons": {
+    "REFRESH": "Atualizar",
+    "LOADING": "Carregando",
+    "OPERATION": "Operação",
+    "PROGRESS": "Progresso",
+    "STATUS": "Status",
+    "CREATED_AT": "Criado(a) em",
+    "FINISHED_AT": "Finalizado(a) em",
+    "SELECT": "Selecione",
+    "NAME": "Nome",
+    "URL": "URL",
+    "TYPE": "Tipo",
+    "ACTIONS": "Ações",
+    "DELETE": "Excluir"
+  },
+
+  "actions": {
+    "NEW_CREDENTIAL": "Nova credencial"
+  },
+
+  "tasks": {
+    "CREATE_CREDENTIAL": "Criar credencial"
+  },
+
+  "status": {
+    "NONE": "Nenhum",
+    "COMPLETED": "Finalizada",
+    "FAILED": "Falha",
+    "RUNNING": "Em execução",
+    "CREATED": "Criada"
+  },
+
+  "loading": {
+    "LOADING_TASKS": "Carregando tarefas...",
+    "LOADING_CREDENTIALS": "Carregando credenciais..."
+  },
+
+  "empty": {
+    "THERE_IS_NO_ITEMS_TO_SHOW": "Não foram encontrados itens para exibir.",
+    "THERE_IS_NO_TASKS_TO_SHOW": "Não foram encontradas tarefas para exibir.",
+    "THERE_IS_NO_CREDENTIALS_TO_SHOW": "Não foram encontradas credenciais para exibir."
+  },
+
+  "pages": {
+    "title": {
+      "TASKS": "Tarefas",
+      "CREDENTIALS": "Credenciais"
+    },
+
+    "description": {
+      "TASKS": "Acompanhe seu histórico de atividades anteriores e o progresso de suas atividades em execução.",
+      "CREDENTIALS": "Gerencie as credenciais cadastradas, ou crie novas credenciais para seus projetos."
+    }
+  },
+
+  "search": {
+    "BY_OPERATION": "Pesquisar por operação",
+    "BY_PROGRESS": "Pesquisar por progresso",
+    "BY_NAME": "Pesquisar por nome",
+    "BY_URL": "Pesquisar por URL",
+    "BY_TYPE": "Pesquisar por tipo"
+  }
+}

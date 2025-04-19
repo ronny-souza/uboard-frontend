@@ -1,0 +1,22 @@
+{
+  "commons": {
+    "REFRESH": "Refresh",
+    "LOADING": "Loading",
+    "THERE_IS_NO_ITEMS_TO_SHOW": "There is no items to show!"
+  },
+
+  "tasks": {
+    "CREATE_CREDENTIAL": "Create credential"
+  },
+
+  "status": {
+    "COMPLETED": "Completed",
+    "FAILED": "Failed",
+    "RUNNING": "Running",
+    "CREATED": "Created"
+  },
+
+  "loading": {
+    "LOADING_TASKS": "Loading tasks..."
+  }
+}
