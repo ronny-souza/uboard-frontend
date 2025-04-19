@@ -1,68 +1,94 @@
 import Swal from 'sweetalert2';
-import { AfterViewInit, Component, inject, ViewChild } from '@angular/core';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { DatePipe } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatIcon } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
+import { Component, inject, OnDestroy } from '@angular/core';
+import { DatePipe, NgIf } from '@angular/common';
 import { RemoteRepositoryCredentials } from '../../core/models/credentials/remote-repository-credentials.model';
-import { EmptyTableMessageComponent } from '../../shared/components/empty-table-message/empty-table-message.component';
-import { UboardButtonComponent } from '../../shared/components/uboard-button/uboard-button.component';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { PageTitleComponent } from '../../shared/components/page-title/page-title.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateCredentialDialog } from './dialogs/create-credential/create-credential-dialog';
 import { CredentialsRestApiService } from '../../core/services/api/credentials-rest-api.service';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SnackBarService } from '../../core/services/snack-bar.service.service';
+import { UboardEmptyTableWarningComponent } from '../../shared/components/uboard-empty-table-warning/uboard-empty-table-warning.component';
+import { UboardPageTitleComponent } from '../../shared/components/uboard-page-title/uboard-page-title.component';
+import { CardModule } from 'primeng/card';
+import { UboardButtonWithIconComponent } from '../../shared/components/uboard-button-with-icon/uboard-button-with-icon.component';
+import { TableModule } from 'primeng/table';
+import { CredentialsFilter } from '../../core/models/credentials/credentials-filter.model';
+import { Subject } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
+import { UboardSpinnerComponent } from '../../shared/components/uboard-spinner/uboard-spinner.component';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
+import { CredentialTypeEnum } from '../../core/models/credentials/credential-type.enum';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-credentials',
   imports: [
-    MatTableModule,
-    MatPaginatorModule,
-    DatePipe,
-    MatCardModule,
-    MatIcon,
-    MatButtonModule,
-    EmptyTableMessageComponent,
-    UboardButtonComponent,
-    MatTooltipModule,
     RouterModule,
-    PageTitleComponent,
-    MatProgressSpinnerModule,
+    TranslateModule,
+    DatePipe,
+    NgIf,
+    FormsModule,
+    CardModule,
+    TableModule,
+    ButtonModule,
+    InputTextModule,
+    SelectModule,
+    UboardEmptyTableWarningComponent,
+    UboardPageTitleComponent,
+    UboardButtonWithIconComponent,
+    UboardSpinnerComponent,
   ],
   templateUrl: './credentials.component.html',
   styleUrl: './credentials.component.scss',
 })
-export class CredentialsComponent implements AfterViewInit {
+export class CredentialsComponent implements OnDestroy {
   readonly dialog = inject(MatDialog);
 
-  displayedColumns: string[] = ['name', 'url', 'type', 'createdAt', 'actions'];
+  displayedColumns: string[] = ['name', 'url', 'type', 'createdAt'];
   credentials: RemoteRepositoryCredentials[] = [];
+  selectedCredentials!: RemoteRepositoryCredentials[];
   totalElements = 0;
+  pageSize = 5;
   isLoadingCredentials = true;
+  lastLoadCredentialsTableEvent: any;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  credentialsTableFilters: CredentialsFilter = {
+    name: '',
+    url: '',
+    type: CredentialTypeEnum.NONE,
+  };
+
+  credentialTypes: any[] = [
+    CredentialTypeEnum.GITLAB,
+    CredentialTypeEnum.GITHUB,
+  ];
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private credentialsRestApiService: CredentialsRestApiService,
     private snackBarService: SnackBarService
   ) {}
 
-  ngAfterViewInit() {
-    this.paginator.page.subscribe(() => this.listCredentialsAsPage());
-    this.listCredentialsAsPage();
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  listCredentialsAsPage() {
-    const page = this.paginator.pageIndex;
-    const size = this.paginator.pageSize || 10;
+  listCredentialsAsPage(event: any) {
+    this.lastLoadCredentialsTableEvent = event;
+    this.isLoadingCredentials = true;
+    this.credentials = [];
+    const page = Math.floor(event.first / event.rows);
+    const size = event.rows;
+    this.pageSize = size;
+
+    const filters = this.cleanEmptyFilters(this.credentialsTableFilters);
 
     this.credentialsRestApiService
-      .listCredentialsAsPage(page, size)
+      .listCredentialsAsPage(page, size, filters)
       .subscribe((response) => {
         this.credentials = response.content;
         this.totalElements = response.page.totalElements;
@@ -71,16 +97,8 @@ export class CredentialsComponent implements AfterViewInit {
   }
 
   refreshCredentials() {
-    this.listCredentialsAsPage();
+    this.listCredentialsAsPage(this.lastLoadCredentialsTableEvent);
   }
-
-  // applyFilter(value: string) {
-  //   this.credentialsTableDataSource.filter = value.trim().toLowerCase();
-
-  //   if (this.credentialsTableDataSource.paginator) {
-  //     this.credentialsTableDataSource.paginator.firstPage();
-  //   }
-  // }
 
   hasItems() {
     return this.credentials.length > 0;
@@ -92,8 +110,12 @@ export class CredentialsComponent implements AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.listCredentialsAsPage();
+      this.listCredentialsAsPage(this.lastLoadCredentialsTableEvent);
     });
+  }
+
+  deleteCredentials() {
+    console.log(this.selectedCredentials);
   }
 
   deleteCredential(credential: RemoteRepositoryCredentials) {
@@ -112,7 +134,7 @@ export class CredentialsComponent implements AfterViewInit {
           (credentialFromArray) => credentialFromArray.uuid === credential.uuid
         );
         if (indexToRemove !== -1) {
-          this.listCredentialsAsPage();
+          this.listCredentialsAsPage(this.lastLoadCredentialsTableEvent);
           this.openDeleteCredentialSuccessSnackBar(credential.name);
         }
       }
@@ -122,5 +144,42 @@ export class CredentialsComponent implements AfterViewInit {
   private openDeleteCredentialSuccessSnackBar(credentialName: string) {
     const message = `Sua solicitação para a exclusão da credencial ${credentialName} foi enviada com sucesso!`;
     this.snackBarService.openSnackBar(message);
+  }
+
+  updateFilter<K extends keyof CredentialsFilter>(
+    field: K,
+    value: CredentialsFilter[K]
+  ) {
+    if (value && value !== CredentialTypeEnum.NONE && value.length > 0) {
+      this.credentialsTableFilters[field] = value;
+    } else {
+      delete this.credentialsTableFilters[field];
+    }
+
+    this.listCredentialsAsPage(this.lastLoadCredentialsTableEvent);
+  }
+
+  clearFilter<K extends keyof CredentialsFilter>(field: K) {
+    delete this.credentialsTableFilters[field];
+    this.listCredentialsAsPage(this.lastLoadCredentialsTableEvent);
+  }
+
+  private cleanEmptyFilters(
+    filters: CredentialsFilter
+  ): Partial<CredentialsFilter> {
+    const cleanedFilters: Partial<CredentialsFilter> = {};
+
+    Object.entries(filters).forEach(([key, value]) => {
+      if (
+        value !== '' &&
+        value !== null &&
+        value !== undefined &&
+        value !== CredentialTypeEnum.NONE
+      ) {
+        cleanedFilters[key as keyof CredentialsFilter] = value;
+      }
+    });
+
+    return cleanedFilters;
   }
 }
