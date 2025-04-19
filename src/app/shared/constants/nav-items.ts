@@ -17,6 +17,11 @@ export const NAV_ITEMS: NavItem[] = [
     href: '/credentials',
   },
   {
+    label: 'Tarefas',
+    icon: 'notifications',
+    href: '/tasks',
+  },
+  {
     label: 'Configurações',
     icon: 'settings',
     href: '/settings',

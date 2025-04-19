@@ -1,0 +1,112 @@
+<section class="container">
+  <app-uboard-page-title
+    titleTranslateKey="pages.title.TASKS"
+    descriptionTranslateKey="pages.description.TASKS"
+  />
+
+  <div class="tasks-table">
+    <p-card>
+      <div class="table-actions">
+        <app-uboard-button-with-icon
+          label="commons.REFRESH"
+          buttonStyle="primary"
+          icon="cached"
+          (click)="refreshTasksTable()"
+        />
+      </div>
+
+      <p-table
+        [value]="tasks"
+        [lazy]="true"
+        dataKey="uuid"
+        [paginator]="true"
+        [rows]="pageSize"
+        [rowsPerPageOptions]="[5, 10, 25, 50]"
+        [totalRecords]="totalElements"
+        (onLazyLoad)="listTasksAsPage($event)"
+        [tableStyle]="{ 'min-width': '75rem' }"
+      >
+        <ng-template #header>
+          <tr>
+            <th>{{ "commons.OPERATION" | translate }}</th>
+            <th style="width: 10%">{{ "commons.PROGRESS" | translate }}</th>
+            <th>
+              {{ "commons.STATUS" | translate }}
+              <p-columnFilter
+                field="status"
+                matchMode="equals"
+                display="menu"
+                [showMatchModes]="false"
+                [showOperator]="false"
+                [showApplyButton]="false"
+                [showAddButton]="false"
+                [showClearButton]="false"
+                (onClear)="clearFilter('status')"
+              >
+                <ng-template #filter let-value let-filter="filterCallback">
+                  <p-select
+                    [options]="statuses"
+                    [(ngModel)]="tasksTableFilters.status"
+                    (onChange)="updateFilter('status', $event.value)"
+                    placeholder="{{ 'commons.SELECT' | translate }}"
+                    [showClear]="true"
+                  >
+                    <ng-template let-status #item>
+                      <p-badge
+                        value="{{ 'status.' + status.value | translate }}"
+                        [severity]="defineStatusBadgeClass(status.value)"
+                      ></p-badge>
+                    </ng-template>
+                    <ng-template #selectedItem let-status>
+                      {{ "status." + status.value | translate }}
+                    </ng-template>
+                  </p-select>
+                </ng-template>
+              </p-columnFilter>
+            </th>
+            <th>{{ "commons.CREATED_AT" | translate }}</th>
+            <th>{{ "commons.FINISHED_AT" | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-task>
+          <tr>
+            <td>
+              {{ "tasks." + task.operation | translate }} -
+              {{ task.detail }}
+            </td>
+            <td>
+              <p-progressbar [value]="task.progress" />
+            </td>
+            <td>
+              <p-badge
+                value="{{ 'status.' + task.status | translate }}"
+                [severity]="defineStatusBadgeClass(task.status)"
+              />
+            </td>
+            <td>
+              {{ task.createdAt | date : "dd/MM/yyyy HH:mm:ss" }}
+            </td>
+
+            <td>
+              {{ task.finishedAt | date : "dd/MM/yyyy HH:mm:ss" }}
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="5">
+              @if (!hasItems() && !isLoadingTasks) {
+              <app-uboard-empty-table-warning
+                translateKey="empty.THERE_IS_NO_TASKS_TO_SHOW"
+              />
+              } @if (isLoadingTasks) {
+              <app-uboard-spinner translateKey="loading.LOADING_TASKS" />
+              }
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+</section>
+<router-outlet />
