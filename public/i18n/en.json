@@ -2,7 +2,23 @@
   "commons": {
     "REFRESH": "Refresh",
     "LOADING": "Loading",
-    "THERE_IS_NO_ITEMS_TO_SHOW": "There is no items to show!"
+    "OPERATION": "Operation",
+    "PROGRESS": "Progress",
+    "STATUS": "Status",
+    "CREATED_AT": "Created at",
+    "FINISHED_AT": "Finished at",
+    "SELECT": "Select",
+    "NAME": "Name",
+    "URL": "URL",
+    "TYPE": "Type",
+    "ACTIONS": "Actions",
+    "DELETE": "Delete",
+    "CANCEL": "Cancel",
+    "SAVE": "Save"
+  },
+
+  "actions": {
+    "NEW_CREDENTIAL": "New credential"
   },
 
   "tasks": {
@@ -10,6 +26,7 @@
   },
 
   "status": {
+    "NONE": "None",
     "COMPLETED": "Completed",
     "FAILED": "Failed",
     "RUNNING": "Running",
@@ -17,6 +34,54 @@
   },
 
   "loading": {
-    "LOADING_TASKS": "Loading tasks..."
+    "LOADING_TASKS": "Loading tasks...",
+    "LOADING_CREDENTIALS": "Loading credentials..."
+  },
+
+  "empty": {
+    "THERE_IS_NO_ITEMS_TO_SHOW": "No items found to display.",
+    "THERE_IS_NO_TASKS_TO_SHOW": "No tasks found to display.",
+    "THERE_IS_NO_CREDENTIALS_TO_SHOW": "No credentials found to display."
+  },
+
+  "pages": {
+    "title": {
+      "TASKS": "Tasks",
+      "CREDENTIALS": "Credentials"
+    },
+
+    "description": {
+      "TASKS": "Track your activity history and the progress of your running tasks.",
+      "CREDENTIALS": "Manage your registered credentials or create new ones for your projects."
+    }
+  },
+
+  "search": {
+    "BY_OPERATION": "Search by operation",
+    "BY_PROGRESS": "Search by progress",
+    "BY_NAME": "Search by name",
+    "BY_URL": "Search by URL",
+    "BY_TYPE": "Search by type"
+  },
+
+  "forms": {
+    "MANDATORY_FIELD": "This field is required",
+    "labels": {
+      "CREDENTIAL_FANTASY_NAME": "Credential nickname",
+      "CREDENTIAL_TYPE": "Credential type",
+      "CREDENTIAL_PROVIDER_URL": "Credential provider URL",
+      "CREDENTIAL_TOKEN": "Token"
+    },
+
+    "placeholders": {
+      "CREDENTIAL_FANTASY_NAME": "Ex. My Credential",
+      "CREDENTIAL_PROVIDER_URL": "https://gitlab.com",
+      "CREDENTIAL_TOKEN": "glpat-****"
+    }
+  },
+
+  "messages": {
+    "CREATE_CREDENTIALS_MESSAGE_SUCCESS": "Attention, user! Your credential registration request has been successfully sent. You can track the progress in the Tasks menu.",
+    "CREATE_CREDENTIALS_MESSAGE_ERROR": "Attention, user! There was an error in your credential registration request. You can check the details in the Tasks menu."
   }
 }

@@ -12,7 +12,9 @@
     "URL": "URL",
     "TYPE": "Tipo",
     "ACTIONS": "Ações",
-    "DELETE": "Excluir"
+    "DELETE": "Excluir",
+    "CANCEL": "Cancelar",
+    "SAVE": "Salvar"
   },
 
   "actions": {
@@ -60,5 +62,26 @@
     "BY_NAME": "Pesquisar por nome",
     "BY_URL": "Pesquisar por URL",
     "BY_TYPE": "Pesquisar por tipo"
+  },
+
+  "forms": {
+    "MANDATORY_FIELD":"Este campo é obrigatório",
+    "labels": {
+      "CREDENTIAL_FANTASY_NAME": "Apelido da credencial",
+      "CREDENTIAL_TYPE": "Tipo de credencial",
+      "CREDENTIAL_PROVIDER_URL": "URL do provedor da credencial",
+      "CREDENTIAL_TOKEN": "Token"
+    },
+
+    "placeholders": {
+      "CREDENTIAL_FANTASY_NAME": "Ex. Minha Credencial",
+      "CREDENTIAL_PROVIDER_URL": "https://gitlab.com",
+      "CREDENTIAL_TOKEN": "glpat-****"
+    }
+  },
+
+  "messages": {
+    "CREATE_CREDENTIALS_MESSAGE_SUCCESS": "Atenção, usuário! Sua solicitação para registro de credencial foi enviada com sucesso. Você pode acompanhar o progresso no menu Tarefas.",
+    "CREATE_CREDENTIALS_MESSAGE_ERROR":"Atenção, usuário! Houve um erro em sua solicitação para registro de credencial. Você pode acompanhar detalhes no menu Tarefas."
   }
 }
