@@ -27,6 +27,9 @@
   --p-checkbox-checked-hover-border-color: var(--primary-hover) !important;
   --p-checkbox-checked-hover-background: var(--primary-hover) !important;
   --p-progressbar-height: 18px !important;
+  --p-floatlabel-focus-color: var(--primary) !important;
+  --p-select-option-selected-focus-background: var(--primary) !important;
+  --p-select-option-selected-focus-color: var(--white) !important;
 
   @include mat.snack-bar-overrides(
     (
