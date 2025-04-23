@@ -4,7 +4,6 @@ import { DatePipe, NgIf } from '@angular/common';
 import { RemoteRepositoryCredentials } from '../../core/models/credentials/remote-repository-credentials.model';
 import { RouterModule } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { CreateCredentialDialog } from './dialogs/create-credential/create-credential-dialog';
 import { CredentialsRestApiService } from '../../core/services/api/credentials-rest-api.service';
 import { SnackBarService } from '../../core/services/snack-bar.service.service';
 import { UboardEmptyTableWarningComponent } from '../../shared/components/uboard-empty-table-warning/uboard-empty-table-warning.component';
@@ -14,13 +13,20 @@ import { UboardButtonWithIconComponent } from '../../shared/components/uboard-bu
 import { TableModule } from 'primeng/table';
 import { CredentialsFilter } from '../../core/models/credentials/credentials-filter.model';
 import { Subject } from 'rxjs';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UboardSpinnerComponent } from '../../shared/components/uboard-spinner/uboard-spinner.component';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
 import { CredentialTypeEnum } from '../../core/models/credentials/credential-type.enum';
 import { SelectModule } from 'primeng/select';
+import { Dialog } from 'primeng/dialog';
+import { CreateRemoteRepositoryCredentials } from '../../core/models/credentials/create-remote-repository-credentials.model';
+import {
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-credentials',
@@ -39,6 +45,8 @@ import { SelectModule } from 'primeng/select';
     UboardPageTitleComponent,
     UboardButtonWithIconComponent,
     UboardSpinnerComponent,
+    ReactiveFormsModule,
+    Dialog,
   ],
   templateUrl: './credentials.component.html',
   styleUrl: './credentials.component.scss',
@@ -65,17 +73,33 @@ export class CredentialsComponent implements OnDestroy {
     CredentialTypeEnum.GITHUB,
   ];
 
+  private _newCredentialFormBuilder = inject(FormBuilder);
+
+  public newCredentialForm = this._newCredentialFormBuilder.group({
+    name: ['', Validators.required],
+    url: ['', Validators.required],
+    type: ['', Validators.required],
+    token: ['', Validators.required],
+  });
+
+  availableCredentialTypes: string[] = ['GITLAB'];
+
   private destroy$ = new Subject<void>();
+
+  isCreateCredentialDialogVisible: boolean = false;
 
   constructor(
     private credentialsRestApiService: CredentialsRestApiService,
-    private snackBarService: SnackBarService
+    private snackBarService: SnackBarService,
+    private translate: TranslateService
   ) {}
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+  /* LISTING PROPERTIES */
 
   listCredentialsAsPage(event: any) {
     this.lastLoadCredentialsTableEvent = event;
@@ -104,15 +128,47 @@ export class CredentialsComponent implements OnDestroy {
     return this.credentials.length > 0;
   }
 
-  openCreateCredentialDialog() {
-    const dialogRef = this.dialog.open(CreateCredentialDialog, {
-      width: '900px',
-    });
+  /* CREATE CREDENTIALS PROPERTIES */
 
-    dialogRef.afterClosed().subscribe((result) => {
-      this.listCredentialsAsPage(this.lastLoadCredentialsTableEvent);
-    });
+  openCreateCredentialDialog() {
+    this.isCreateCredentialDialogVisible = true;
   }
+
+  hasErrorInField(fieldName: string): boolean {
+    const control = this.newCredentialForm.get(fieldName);
+    return !!(control && control.touched && control.invalid && control.dirty);
+  }
+
+  createCredential() {
+    if (this.newCredentialForm.valid) {
+      const body = this.newCredentialForm
+        .value as CreateRemoteRepositoryCredentials;
+      this.credentialsRestApiService
+        .createRepositoryCredentials(body)
+        .subscribe({
+          next: (response) => {
+            this.snackBarService.openSnackBar(
+              this.translate.instant(
+                'messages.CREATE_CREDENTIALS_MESSAGE_SUCCESS'
+              )
+            );
+            this.isCreateCredentialDialogVisible = false;
+          },
+
+          error: (error) => {
+            console.error(error);
+            this.snackBarService.openSnackBar(
+              this.translate.instant(
+                'messages.CREATE_CREDENTIALS_MESSAGE_ERROR'
+              )
+            );
+            this.isCreateCredentialDialogVisible = false;
+          },
+        });
+    }
+  }
+
+  /* DELETE CREDENTIALS PROPERTIES */
 
   deleteCredentials() {
     console.log(this.selectedCredentials);
@@ -145,6 +201,8 @@ export class CredentialsComponent implements OnDestroy {
     const message = `Sua solicitação para a exclusão da credencial ${credentialName} foi enviada com sucesso!`;
     this.snackBarService.openSnackBar(message);
   }
+
+  /* LISTING FILTERS PROPERTIES */
 
   updateFilter<K extends keyof CredentialsFilter>(
     field: K,
