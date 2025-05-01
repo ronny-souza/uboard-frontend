@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CreateRemoteRepositoryCredentials } from '../../models/credentials/create-remote-repository-credentials.model';
-import { RemoteRepositoryCredentials } from '../../models/credentials/remote-repository-credentials.model';
+import { CreateCredentialModel } from '../../models/credentials/create-credential.model';
+import { CredentialModel } from '../../models/credentials/credential.model';
 import { Page } from '../../models/page.model';
-import { CredentialsFilter } from '../../models/credentials/credentials-filter.model';
+import { CredentialFilterModel } from '../../models/credentials/credential-filter.model';
+import { CredentialTargetModel } from '../../models/credentials/credential-target.model';
 
 @Injectable({
   providedIn: 'root',
@@ -18,8 +19,8 @@ export class CredentialsRestApiService {
   listCredentialsAsPage(
     page: number,
     size: number,
-    filters: CredentialsFilter = {}
-  ): Observable<Page<RemoteRepositoryCredentials>> {
+    filters: CredentialFilterModel = {}
+  ): Observable<Page<CredentialModel>> {
     let params = new HttpParams().set('page', page).set('size', size);
 
     Object.entries(filters).forEach(([key, value]) => {
@@ -28,18 +29,20 @@ export class CredentialsRestApiService {
       }
     });
 
-    return this.httpClient.get<Page<RemoteRepositoryCredentials>>(
-      this.baseUrl,
-      { params }
-    );
+    return this.httpClient.get<Page<CredentialModel>>(this.baseUrl, { params });
   }
 
-  createRepositoryCredentials(
-    body: CreateRemoteRepositoryCredentials
-  ): Observable<RemoteRepositoryCredentials> {
-    return this.httpClient.post<RemoteRepositoryCredentials>(
-      this.baseUrl,
-      body
-    );
+  listCredentialProjects(uuid: string): Observable<CredentialTargetModel[]> {
+    const url = `${this.baseUrl}/${uuid}/projects`;
+    return this.httpClient.get<CredentialTargetModel[]>(url);
+  }
+
+  listCredentialGroups(uuid: string): Observable<CredentialTargetModel[]> {
+    const url = `${this.baseUrl}/${uuid}/groups`;
+    return this.httpClient.get<CredentialTargetModel[]>(url);
+  }
+
+  createCredential(body: CreateCredentialModel): Observable<CredentialModel> {
+    return this.httpClient.post<CredentialModel>(this.baseUrl, body);
   }
 }
