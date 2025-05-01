@@ -7,6 +7,8 @@ import { canActivateAuth } from './core/guards/auth.guard';
 import { RoomsComponent } from './features/scrum-poker/rooms/rooms.component';
 import { ScrumPokerRoomComponent } from './features/scrum-poker/scrum-poker-room/scrum-poker-room.component';
 import { TasksComponent } from './features/tasks/tasks.component';
+import { OrganizationsComponent } from './features/organizations/organizations.component';
+import { OrganizationDetailsComponent } from './features/organizations/organization-details/organization-details.component';
 
 export const routes: Routes = [
   {
@@ -22,6 +24,14 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
+      },
+      {
+        path: 'organizations',
+        component: OrganizationsComponent,
+      },
+      {
+        path: 'organizations/:organizationId',
+        component: OrganizationDetailsComponent,
       },
       {
         path: 'credentials',
