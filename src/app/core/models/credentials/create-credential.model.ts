@@ -1,4 +1,4 @@
-export interface CreateRemoteRepositoryCredentials {
+export interface CreateCredentialModel {
   name: string;
   url: string;
   token: string;
