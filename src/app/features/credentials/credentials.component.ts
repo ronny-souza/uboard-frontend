@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2';
 import { Component, inject, OnDestroy } from '@angular/core';
 import { DatePipe, NgIf } from '@angular/common';
-import { RemoteRepositoryCredentials } from '../../core/models/credentials/remote-repository-credentials.model';
+import { CredentialModel } from '../../core/models/credentials/credential.model';
 import { RouterModule } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CredentialsRestApiService } from '../../core/services/api/credentials-rest-api.service';
@@ -11,7 +11,7 @@ import { UboardPageTitleComponent } from '../../shared/components/uboard-page-ti
 import { CardModule } from 'primeng/card';
 import { UboardButtonWithIconComponent } from '../../shared/components/uboard-button-with-icon/uboard-button-with-icon.component';
 import { TableModule } from 'primeng/table';
-import { CredentialsFilter } from '../../core/models/credentials/credentials-filter.model';
+import { CredentialFilterModel } from '../../core/models/credentials/credential-filter.model';
 import { Subject } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UboardSpinnerComponent } from '../../shared/components/uboard-spinner/uboard-spinner.component';
@@ -20,7 +20,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CredentialTypeEnum } from '../../core/models/credentials/credential-type.enum';
 import { SelectModule } from 'primeng/select';
 import { Dialog } from 'primeng/dialog';
-import { CreateRemoteRepositoryCredentials } from '../../core/models/credentials/create-remote-repository-credentials.model';
+import { CreateCredentialModel } from '../../core/models/credentials/create-credential.model';
 import {
   FormBuilder,
   FormsModule,
@@ -55,14 +55,14 @@ export class CredentialsComponent implements OnDestroy {
   readonly dialog = inject(MatDialog);
 
   displayedColumns: string[] = ['name', 'url', 'type', 'createdAt'];
-  credentials: RemoteRepositoryCredentials[] = [];
-  selectedCredentials!: RemoteRepositoryCredentials[];
+  credentials: CredentialModel[] = [];
+  selectedCredentials!: CredentialModel[];
   totalElements = 0;
   pageSize = 5;
   isLoadingCredentials = true;
   lastLoadCredentialsTableEvent: any;
 
-  credentialsTableFilters: CredentialsFilter = {
+  credentialsTableFilters: CredentialFilterModel = {
     name: '',
     url: '',
     type: CredentialTypeEnum.NONE,
@@ -134,17 +134,12 @@ export class CredentialsComponent implements OnDestroy {
     this.isCreateCredentialDialogVisible = true;
   }
 
-  hasErrorInField(fieldName: string): boolean {
-    const control = this.newCredentialForm.get(fieldName);
-    return !!(control && control.touched && control.invalid && control.dirty);
-  }
-
   createCredential() {
     if (this.newCredentialForm.valid) {
       const body = this.newCredentialForm
-        .value as CreateRemoteRepositoryCredentials;
+        .value as CreateCredentialModel;
       this.credentialsRestApiService
-        .createRepositoryCredentials(body)
+        .createCredential(body)
         .subscribe({
           next: (response) => {
             this.snackBarService.openSnackBar(
@@ -174,7 +169,7 @@ export class CredentialsComponent implements OnDestroy {
     console.log(this.selectedCredentials);
   }
 
-  deleteCredential(credential: RemoteRepositoryCredentials) {
+  deleteCredential(credential: CredentialModel) {
     Swal.fire({
       title: 'Tem certeza?',
       text: 'Ao confirmar, não será possível recuperar a credencial excluída.',
@@ -204,9 +199,9 @@ export class CredentialsComponent implements OnDestroy {
 
   /* LISTING FILTERS PROPERTIES */
 
-  updateFilter<K extends keyof CredentialsFilter>(
+  updateFilter<K extends keyof CredentialFilterModel>(
     field: K,
-    value: CredentialsFilter[K]
+    value: CredentialFilterModel[K]
   ) {
     if (value && value !== CredentialTypeEnum.NONE && value.length > 0) {
       this.credentialsTableFilters[field] = value;
@@ -217,15 +212,15 @@ export class CredentialsComponent implements OnDestroy {
     this.listCredentialsAsPage(this.lastLoadCredentialsTableEvent);
   }
 
-  clearFilter<K extends keyof CredentialsFilter>(field: K) {
+  clearFilter<K extends keyof CredentialFilterModel>(field: K) {
     delete this.credentialsTableFilters[field];
     this.listCredentialsAsPage(this.lastLoadCredentialsTableEvent);
   }
 
   private cleanEmptyFilters(
-    filters: CredentialsFilter
-  ): Partial<CredentialsFilter> {
-    const cleanedFilters: Partial<CredentialsFilter> = {};
+    filters: CredentialFilterModel
+  ): Partial<CredentialFilterModel> {
+    const cleanedFilters: Partial<CredentialFilterModel> = {};
 
     Object.entries(filters).forEach(([key, value]) => {
       if (
@@ -234,7 +229,7 @@ export class CredentialsComponent implements OnDestroy {
         value !== undefined &&
         value !== CredentialTypeEnum.NONE
       ) {
-        cleanedFilters[key as keyof CredentialsFilter] = value;
+        cleanedFilters[key as keyof CredentialFilterModel] = value;
       }
     });
 
