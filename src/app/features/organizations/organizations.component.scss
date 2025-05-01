@@ -1,0 +1,40 @@
+.organizations-table {
+  margin-top: 3%;
+}
+
+.table-actions {
+  margin-bottom: 2%;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.new-organization-form-body {
+  margin-top: 3%;
+  width: 100%;
+
+  input,
+  p-select {
+    width: 100%;
+  }
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 3%;
+
+  label {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+  }
+}
+
+.form-field-error {
+  font-size: 14px !important;
+  color: var(--mat-sys-error);
+  margin-bottom: 2%;
+}

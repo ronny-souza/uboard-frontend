@@ -1,0 +1,359 @@
+<section class="container">
+  <app-uboard-page-title
+    titleTranslateKey="pages.title.ORGANIZATIONS"
+    descriptionTranslateKey="pages.description.ORGANIZATIONS"
+  />
+
+  <div class="organizations-table">
+    <p-card>
+      <div class="table-actions">
+        <app-uboard-button-with-icon
+          label="actions.NEW_ORGANIZATION"
+          buttonStyle="primary"
+          icon="add"
+          (click)="openCreateOrganizationDialog()"
+        />
+
+        <app-uboard-button-with-icon
+          label="commons.REFRESH"
+          buttonStyle="primary"
+          icon="cached"
+          (click)="refreshOrganizationsTable()"
+        />
+
+        <!-- <app-uboard-button-with-icon
+          label="commons.DELETE"
+          buttonStyle="danger"
+          icon="delete"
+          (click)="deleteCredentials()"
+          *ngIf="selectedCredentials && selectedCredentials.length > 0"
+        /> -->
+      </div>
+
+      <p-table
+        [value]="organizations"
+        [lazy]="true"
+        dataKey="uuid"
+        [paginator]="true"
+        [rows]="pageSize"
+        [rowsPerPageOptions]="[5, 10, 25, 50]"
+        [totalRecords]="totalElements"
+        (onLazyLoad)="listOrganizationsAsPage($event)"
+        [tableStyle]="{ 'min-width': '75rem' }"
+        [(selection)]="selectedOrganizations"
+      >
+        <ng-template #header>
+          <tr>
+            <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
+            <th>{{ "commons.NAME" | translate }}</th>
+            <th>{{ "commons.PROVIDER_TARGET" | translate }}</th>
+            <th>{{ "commons.SCOPE" | translate }}</th>
+            <th>{{ "commons.PROVIDER_TYPE" | translate }}</th>
+            <th>{{ "commons.CREATED_AT" | translate }}</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>
+              <p-columnFilter
+                field="name"
+                matchMode="contains"
+                [showMenu]="false"
+                [showClearButton]="true"
+                (onClear)="clearFilter('name')"
+              >
+                <ng-template #filter let-value let-filter="filterCallback">
+                  <input
+                    type="text"
+                    pInputText
+                    [(ngModel)]="organizationsTableFilters.name"
+                    (ngModelChange)="updateFilter('name', $event)"
+                    placeholder="{{ 'search.BY_NAME' | translate }}"
+                  />
+                </ng-template>
+              </p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                field="providerName"
+                matchMode="contains"
+                [showMenu]="false"
+                [showClearButton]="true"
+                (onClear)="clearFilter('providerName')"
+              >
+                <ng-template #filter let-value let-filter="filterCallback">
+                  <input
+                    type="text"
+                    pInputText
+                    [(ngModel)]="organizationsTableFilters.providerName"
+                    (ngModelChange)="updateFilter('providerName', $event)"
+                    placeholder="{{ 'search.BY_TARGET' | translate }}"
+                  />
+                </ng-template>
+              </p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                field="scope"
+                matchMode="equals"
+                [showMenu]="false"
+                (onClear)="clearFilter('scope')"
+              >
+                <ng-template #filter let-value let-filter="filterCallback">
+                  <p-select
+                    [(ngModel)]="organizationsTableFilters.scope"
+                    [options]="scopeTypes"
+                    (onChange)="updateFilter('scope', $event.value)"
+                    placeholder="{{ 'commons.SELECT' | translate }}"
+                    [showClear]="true"
+                  >
+                    <ng-template let-scopeType #item>
+                      {{ "commons." + scopeType | translate }}
+                    </ng-template>
+                  </p-select>
+                </ng-template>
+              </p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                field="type"
+                matchMode="equals"
+                [showMenu]="false"
+                (onClear)="clearFilter('type')"
+              >
+                <ng-template #filter let-value let-filter="filterCallback">
+                  <p-select
+                    [(ngModel)]="organizationsTableFilters.type"
+                    [options]="credentialTypes"
+                    (onChange)="updateFilter('type', $event.value)"
+                    placeholder="{{ 'commons.SELECT' | translate }}"
+                    [showClear]="true"
+                  >
+                    <ng-template let-credentialType #item>
+                      {{ "commons." + credentialType | translate }}
+                    </ng-template>
+                  </p-select>
+                </ng-template>
+              </p-columnFilter>
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-organization>
+          <tr
+            [routerLink]="['/organizations', organization.uuid]"
+            routerLinkActive="active"
+            style="cursor: pointer"
+          >
+            <td>
+              <p-tableCheckbox [value]="organization" (click)="$event.stopPropagation()" />
+            </td>
+            <td>
+              {{ organization.name }}
+            </td>
+            <td>
+              {{ organization.integration.providerName }}
+            </td>
+            <td>
+              {{ "commons." + organization.integration.scope | translate }}
+            </td>
+            <td>
+              {{ "commons." + organization.integration.type | translate }}
+            </td>
+            <td>
+              {{ organization.createdAt | date : "dd/MM/yyyy HH:mm:ss" }}
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="5">
+              @if (!hasItems() && !isLoadingOrganizations) {
+              <app-uboard-empty-table-warning
+                translateKey="empty.THERE_IS_NO_ORGANIZATIONS_TO_SHOW"
+              />
+              } @if (isLoadingOrganizations) {
+              <app-uboard-spinner
+                translateKey="loading.LOADING_ORGANIZATIONS"
+              />
+              }
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+</section>
+
+<!-- CREATE ORGANIZATION FORM -->
+<section>
+  <p-dialog
+    [(visible)]="isCreateOrganizationDialogVisible"
+    [modal]="true"
+    [style]="{ width: '40rem' }"
+    header="{{ 'actions.NEW_ORGANIZATION' | translate }}"
+  >
+    <form [formGroup]="newOrganizationForm">
+      <div class="new-organization-form-body">
+        <div class="form-item">
+          <label for="name">{{
+            "forms.labels.ORGANIZATION_FANTASY_NAME" | translate
+          }}</label>
+          <input
+            pInputText
+            id="name"
+            formControlName="name"
+            autocomplete="off"
+            placeholder="{{
+              'forms.placeholders.ORGANIZATION_FANTASY_NAME' | translate
+            }}"
+          />
+          @if (newOrganizationForm.get('name')?.hasError('required')) {
+          <p class="form-field-error">
+            {{ "forms.MANDATORY_FIELD" | translate }}
+          </p>
+          }
+        </div>
+
+        <div class="form-item">
+          <label for="type">{{
+            "forms.labels.PROVIDER_TYPE" | translate
+          }}</label>
+          <p-select
+            [options]="availableCredentialTypes"
+            placeholder="{{ 'commons.SELECT' | translate }}"
+            class="w-full md:w-56"
+            id="type"
+            formControlName="type"
+            (onChange)="onChangeProviderType()"
+          />
+          @if (newOrganizationForm.get('type')?.hasError('required')) {
+          <p class="form-field-error">
+            {{ "forms.MANDATORY_FIELD" | translate }}
+          </p>
+          }
+        </div>
+
+        <div class="form-item">
+          <label for="credential"
+            >{{ "forms.labels.CREDENTIAL" | translate }}
+            <mat-spinner
+              diameter="16"
+              *ngIf="isLoadingCredentials"
+            ></mat-spinner>
+          </label>
+          <p-select
+            [options]="credentials"
+            placeholder="{{ 'commons.SELECT' | translate }}"
+            class="w-full md:w-56"
+            id="credential"
+            optionLabel="name"
+            optionValue="uuid"
+            formControlName="credential"
+          />
+          @if (newOrganizationForm.get('credential')?.hasError('required')) {
+          <p class="form-field-error">
+            {{ "forms.MANDATORY_FIELD" | translate }}
+          </p>
+          } @if (newOrganizationForm.get("type")?.value && credentials.length
+          === 0) {
+          <p class="form-field-error">
+            {{ "forms.errors.THERE_IS_NO_CREDENTIALS_TO_SHOW" | translate }}
+          </p>
+          } @if (!newOrganizationForm.get("type")?.value) {
+          <p class="form-field-error">
+            {{
+              "forms.feedbacks.SELECT_TYPE_FIRST_TO_LIST_CREDENTIALS"
+                | translate
+            }}
+          </p>
+          }
+        </div>
+
+        <div class="form-item">
+          <label for="scope"
+            >{{ "forms.labels.SCOPE" | translate }}
+            <mat-spinner diameter="16" *ngIf="isLoadingScopeTypes"></mat-spinner
+          ></label>
+          <p-select
+            [appendTo]="'body'"
+            [options]="availableScopeTypes"
+            placeholder="{{ 'commons.SELECT' | translate }}"
+            class="w-full md:w-56"
+            id="scope"
+            optionLabel="label"
+            optionValue="value"
+            formControlName="scope"
+            (onChange)="onChangeScope()"
+          />
+          @if (newOrganizationForm.get('scope')?.hasError('required')) {
+          <p class="form-field-error">
+            {{ "forms.MANDATORY_FIELD" | translate }}
+          </p>
+          } @if (newOrganizationForm.get("type")?.value &&
+          availableScopeTypes.length === 0) {
+          <p class="form-field-error">
+            {{ "forms.errors.THERE_IS_NO_AVAILABLE_SCOPE_TYPES" | translate }}
+          </p>
+          } @if (!newOrganizationForm.get("type")?.value) {
+          <p class="form-field-error">
+            {{ "forms.feedbacks.SELECT_TYPE_FIRST_TO_LIST_SCOPES" | translate }}
+          </p>
+          }
+        </div>
+
+        <div class="form-item" *ngIf="isScopeSelected">
+          <label for="scope">
+            @if(newOrganizationForm.get('scope')?.value === 'PROJECT') {
+            {{ "forms.labels.TARGET_PROJECT" | translate }}
+            } @else {
+            {{ "forms.labels.TARGET_GROUP" | translate }}
+            }
+            <mat-spinner diameter="16" *ngIf="isLoadingTargets"></mat-spinner
+          ></label>
+          <p-select
+            [appendTo]="'body'"
+            [options]="targets"
+            placeholder="{{ 'commons.SELECT' | translate }}"
+            class="w-full md:w-56"
+            id="scope"
+            optionLabel="name"
+            formControlName="target"
+          />
+          @if (newOrganizationForm.get('target')?.hasError('required')) {
+          <p class="form-field-error">
+            {{ "forms.MANDATORY_FIELD" | translate }}
+          </p>
+          } @if (newOrganizationForm.get("target")?.value && targets.length ===
+          0) {
+          <p class="form-field-error">
+            {{
+              "forms.errors.THERE_IS_NO_AVAILABLE_TARGETS_TO_SHOW" | translate
+            }}
+          </p>
+          }
+        </div>
+      </div>
+    </form>
+    <ng-template #footer>
+      <p-button
+        label="{{ 'commons.CANCEL' | translate }}"
+        [text]="true"
+        severity="secondary"
+        (click)="closeCreateOrganizationDialog()"
+      />
+      <p-button
+        label="{{ 'commons.SAVE' | translate }}"
+        [outlined]="false"
+        severity="primary"
+        (click)="createOrganization()"
+        [disabled]="
+          !newOrganizationForm.valid ||
+          newOrganizationForm.get('target')?.value?.id === 0
+        "
+      />
+    </ng-template>
+  </p-dialog>
+</section>
+<!-- END CREATE ORGANIZATION FORM -->
+
+<router-outlet />

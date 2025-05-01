@@ -11,6 +11,7 @@ import { NavItem } from '../../core/models/nav-item.model';
 import { User } from '../../core/models/user.model';
 import { UboardKeycloakService } from '../../core/services/uboard-keycloak.service';
 import { NAV_ITEMS } from '../../shared/constants/nav-items';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-sidenav',
   imports: [
@@ -22,6 +23,7 @@ import { NAV_ITEMS } from '../../shared/constants/nav-items';
     RouterModule,
     MatButtonModule,
     MatMenuModule,
+    TranslateModule,
   ],
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss',
@@ -41,7 +43,8 @@ export class SidenavComponent implements OnDestroy {
 
     this._mobileQuery = media.matchMedia('(max-width: 600px)');
     this.isMobile.set(this._mobileQuery.matches);
-    this._mobileQueryListener = () => this.isMobile.set(this._mobileQuery.matches);
+    this._mobileQueryListener = () =>
+      this.isMobile.set(this._mobileQuery.matches);
     this._mobileQuery.addEventListener('change', this._mobileQueryListener);
   }
 

@@ -1,4 +1,4 @@
-export interface RemoteRepositoryCredentials {
+export interface CredentialModel {
   uuid: string;
   name: string;
   url: string;

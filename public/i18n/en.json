@@ -1,4 +1,13 @@
 {
+  "menu": {
+    "DASHBOARD": "Dashboard",
+    "ORGANIZATIONS": "Organizations",
+    "VOTING": "Voting",
+    "CREDENTIALS": "Credentials",
+    "TASKS": "Tasks",
+    "SETTINGS": "Settings"
+  },
+
   "commons": {
     "REFRESH": "Refresh",
     "LOADING": "Loading",
@@ -14,15 +23,24 @@
     "ACTIONS": "Actions",
     "DELETE": "Delete",
     "CANCEL": "Cancel",
-    "SAVE": "Save"
+    "SAVE": "Save",
+    "PROJECT": "Project",
+    "GROUP": "Group",
+    "PROVIDER_TARGET": "Target in provider",
+    "SCOPE": "Scope",
+    "GITHUB": "Github",
+    "GITLAB": "Gitlab",
+    "PROVIDER_TYPE": "Provider type"
   },
 
   "actions": {
-    "NEW_CREDENTIAL": "New credential"
+    "NEW_CREDENTIAL": "New credential",
+    "NEW_ORGANIZATION": "New organization"
   },
 
   "tasks": {
-    "CREATE_CREDENTIAL": "Create credential"
+    "CREATE_CREDENTIAL": "Create credential",
+    "CREATE_ORGANIZATION": "Create organization"
   },
 
   "status": {
@@ -35,24 +53,28 @@
 
   "loading": {
     "LOADING_TASKS": "Loading tasks...",
-    "LOADING_CREDENTIALS": "Loading credentials..."
+    "LOADING_CREDENTIALS": "Loading credentials...",
+    "LOADING_ORGANIZATIONS": "Loading organizations..."
   },
 
   "empty": {
     "THERE_IS_NO_ITEMS_TO_SHOW": "No items found to display.",
     "THERE_IS_NO_TASKS_TO_SHOW": "No tasks found to display.",
-    "THERE_IS_NO_CREDENTIALS_TO_SHOW": "No credentials found to display."
+    "THERE_IS_NO_CREDENTIALS_TO_SHOW": "No credentials found to display.",
+    "THERE_IS_NO_ORGANIZATIONS_TO_SHOW": "No organizations found to display."
   },
 
   "pages": {
     "title": {
       "TASKS": "Tasks",
-      "CREDENTIALS": "Credentials"
+      "CREDENTIALS": "Credentials",
+      "ORGANIZATIONS": "Organizations"
     },
 
     "description": {
-      "TASKS": "Track your activity history and the progress of your running tasks.",
-      "CREDENTIALS": "Manage your registered credentials or create new ones for your projects."
+      "TASKS": "Track your activity history and the progress of ongoing operations.",
+      "CREDENTIALS": "Manage registered credentials or create new ones for your projects.",
+      "ORGANIZATIONS": "Manage your organizations or create new ones for your projects."
     }
   },
 
@@ -61,7 +83,8 @@
     "BY_PROGRESS": "Search by progress",
     "BY_NAME": "Search by name",
     "BY_URL": "Search by URL",
-    "BY_TYPE": "Search by type"
+    "BY_TYPE": "Search by type",
+    "BY_TARGET": "Search by target"
   },
 
   "forms": {
@@ -70,18 +93,39 @@
       "CREDENTIAL_FANTASY_NAME": "Credential nickname",
       "CREDENTIAL_TYPE": "Credential type",
       "CREDENTIAL_PROVIDER_URL": "Credential provider URL",
-      "CREDENTIAL_TOKEN": "Token"
+      "CREDENTIAL_TOKEN": "Token",
+      "ORGANIZATION_FANTASY_NAME": "Organization nickname",
+      "PROVIDER_TYPE": "Provider type",
+      "CREDENTIAL": "Credential",
+      "SCOPE": "Scope",
+      "TARGET_PROJECT": "Target project",
+      "TARGET_GROUP": "Target group"
     },
 
     "placeholders": {
-      "CREDENTIAL_FANTASY_NAME": "Ex. My Credential",
+      "CREDENTIAL_FANTASY_NAME": "E.g., My Credential",
       "CREDENTIAL_PROVIDER_URL": "https://gitlab.com",
-      "CREDENTIAL_TOKEN": "glpat-****"
+      "CREDENTIAL_TOKEN": "glpat-****",
+      "ORGANIZATION_FANTASY_NAME": "E.g., My Organization"
+    },
+
+    "errors": {
+      "THERE_IS_NO_CREDENTIALS_TO_SHOW": "No credentials found to display.",
+      "THERE_IS_NO_AVAILABLE_SCOPE_TYPES": "No available scopes found to display.",
+      "THERE_IS_NO_AVAILABLE_TARGETS_TO_SHOW": "No target projects or groups found to display."
+    },
+
+    "feedbacks": {
+      "SELECT_TYPE_FIRST_TO_LIST_CREDENTIALS": "Select a provider type to display available credentials.",
+      "SELECT_TYPE_FIRST_TO_LIST_SCOPES": "Select a provider type to display available scopes.",
+      "SELECT_TYPE_FIRST_TO_LIST_TARGETS": "Select a provider type to display available targets."
     }
   },
 
   "messages": {
-    "CREATE_CREDENTIALS_MESSAGE_SUCCESS": "Attention, user! Your credential registration request has been successfully sent. You can track the progress in the Tasks menu.",
-    "CREATE_CREDENTIALS_MESSAGE_ERROR": "Attention, user! There was an error in your credential registration request. You can check the details in the Tasks menu."
+    "CREATE_CREDENTIALS_MESSAGE_SUCCESS": "Attention, user! Your credential creation request was successfully submitted. You can track the progress in the Tasks menu.",
+    "CREATE_CREDENTIALS_MESSAGE_ERROR": "Attention, user! An error occurred during your credential creation request. You can check details in the Tasks menu.",
+    "CREATE_ORGANIZATION_MESSAGE_SUCCESS": "Attention, user! Your organization creation request was successfully submitted. You can track the progress in the Tasks menu.",
+    "CREATE_ORGANIZATION_MESSAGE_ERROR": "Attention, user! An error occurred during your organization creation request. You can check details in the Tasks menu."
   }
 }

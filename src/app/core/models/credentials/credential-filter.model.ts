@@ -1,6 +1,6 @@
 import { CredentialTypeEnum } from './credential-type.enum';
 
-export interface CredentialsFilter {
+export interface CredentialFilterModel {
   name?: string;
   url?: string;
   type?: CredentialTypeEnum;
