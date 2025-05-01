@@ -2,27 +2,32 @@ import { NavItem } from '../../core/models/nav-item.model';
 
 export const NAV_ITEMS: NavItem[] = [
   {
-    label: 'Dashboard',
+    label: 'DASHBOARD',
     icon: 'dashboard',
     href: '/dashboard',
   },
   {
-    label: 'Votação',
+    label: 'ORGANIZATIONS',
+    icon: 'inventory_2',
+    href: '/organizations',
+  },
+  {
+    label: 'VOTING',
     icon: 'scoreboard',
     href: '/scrum-poker/rooms',
   },
   {
-    label: 'Credenciais',
+    label: 'CREDENTIALS',
     icon: 'vpn_key',
     href: '/credentials',
   },
   {
-    label: 'Tarefas',
+    label: 'TASKS',
     icon: 'notifications',
     href: '/tasks',
   },
   {
-    label: 'Configurações',
+    label: 'SETTINGS',
     icon: 'settings',
     href: '/settings',
   },
