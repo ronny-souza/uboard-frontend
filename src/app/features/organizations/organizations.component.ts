@@ -282,7 +282,6 @@ export class OrganizationsComponent {
   ) {
     if (value && value.length > 0) {
       this.organizationsTableFilters[field] = value;
-      console.log(this.organizationsTableFilters);
     } else {
       delete this.organizationsTableFilters[field];
     }

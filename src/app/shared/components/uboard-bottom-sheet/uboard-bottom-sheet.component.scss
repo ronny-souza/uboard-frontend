@@ -1,0 +1,24 @@
+mat-nav-list {
+  a {
+    margin-bottom: 3%;
+  }
+}
+
+.mat-mdc-list-item-title {
+  display: flex;
+  align-items: center !important;
+  margin-bottom: 0.2%;
+  font-weight: 700;
+}
+
+.action-icon {
+  margin-right: 5px;
+}
+
+.mdc-list-item--with-two-lines .mdc-list-item__content {
+  align-self: normal;
+}
+
+.mat-mdc-nav-list .mat-mdc-list-item {
+  border-radius: 10px;
+}

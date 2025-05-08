@@ -1,0 +1,33 @@
+.container {
+  .header-items {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.administrator-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.margin-bottom {
+  margin-bottom: 2%;
+}
+
+.milestones-table {
+  margin-top: 3%;
+}
+
+.milestones-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.table-actions {
+  margin-bottom: 2%;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}

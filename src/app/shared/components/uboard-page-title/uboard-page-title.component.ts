@@ -10,4 +10,5 @@ import { TranslateModule } from '@ngx-translate/core';
 export class UboardPageTitleComponent {
   @Input() titleTranslateKey: string = '';
   @Input() descriptionTranslateKey: string = '';
+  @Input() descriptionParams?: { [key: string]: any };
 }

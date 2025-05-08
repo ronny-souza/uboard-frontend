@@ -15,7 +15,10 @@
     "PROGRESS": "Progress",
     "STATUS": "Status",
     "CREATED_AT": "Created at",
+    "UPDATED_AT": "Updated at",
     "FINISHED_AT": "Finished at",
+    "DUE_AT": "Due date",
+    "LAST_UPDATE_AT": "Last update",
     "SELECT": "Select",
     "NAME": "Name",
     "URL": "URL",
@@ -26,42 +29,78 @@
     "SAVE": "Save",
     "PROJECT": "Project",
     "GROUP": "Group",
-    "PROVIDER_TARGET": "Target in provider",
+    "PROVIDER_TARGET": "Provider target",
     "SCOPE": "Scope",
-    "GITHUB": "Github",
-    "GITLAB": "Gitlab",
-    "PROVIDER_TYPE": "Provider type"
+    "GITHUB": "GitHub",
+    "GITLAB": "GitLab",
+    "PROVIDER_TYPE": "Provider type",
+    "BACK": "Back",
+    "TOTAL_ISSUES_COUNT": "Issues",
+    "TOTAL_ISSUES_OPENED": "Open issues",
+    "TOTAL_ISSUES_CLOSED": "Closed issues",
+    "MILESTONES": "Milestones",
+    "ACTIVE": "Active",
+    "CLOSED": "Closed",
+    "PROJECT_LOWER_CASE": "project",
+    "GROUP_LOWER_CASE": "group",
+    "EVERY_30_MINUTES": "Every 30 minutes",
+    "EVERY_HOUR": "Every hour",
+    "EVERY_3_HOURS": "Every 3 hours",
+    "EVERY_6_HOURS": "Every 6 hours",
+    "EVERY_12_HOURS": "Every 12 hours",
+    "EVERY_DAY": "Once a day",
+    "ONCE_A_WEEK": "Once a week",
+    "SUNDAY": "Sunday",
+    "MONDAY": "Monday",
+    "TUESDAY": "Tuesday",
+    "WEDNESDAY": "Wednesday",
+    "THURSDAY": "Thursday",
+    "FRIDAY": "Friday",
+    "SATURDAY": "Saturday"
   },
 
   "actions": {
     "NEW_CREDENTIAL": "New credential",
-    "NEW_ORGANIZATION": "New organization"
+    "NEW_ORGANIZATION": "New organization",
+    "DELETE_ORGANIZATION": "Delete organization",
+    "SYNCHRONIZE_MILESTONE": "Synchronize milestone",
+    "IMPORT_MILESTONE": "Import milestone",
+
+    "description": {
+      "DELETE_ORGANIZATION_DESCRIPTION": "Permanently remove the organization and its associated data.",
+      "SYNCHRONIZE_MILESTONE_DESCRIPTION": "Synchronize milestone information and its issues directly from the provider."
+    }
   },
 
   "tasks": {
     "CREATE_CREDENTIAL": "Create credential",
-    "CREATE_ORGANIZATION": "Create organization"
+    "CREATE_ORGANIZATION": "Create organization",
+    "SYNCHRONIZE_MILESTONE": "Synchronize milestone",
+    "IMPORT_MILESTONE": "Import milestone"
   },
 
   "status": {
     "NONE": "None",
     "COMPLETED": "Completed",
     "FAILED": "Failed",
-    "RUNNING": "Running",
+    "RUNNING": "In progress",
     "CREATED": "Created"
   },
 
   "loading": {
     "LOADING_TASKS": "Loading tasks...",
     "LOADING_CREDENTIALS": "Loading credentials...",
-    "LOADING_ORGANIZATIONS": "Loading organizations..."
+    "LOADING_ORGANIZATIONS": "Loading organizations...",
+    "LOADING_ORGANIZATION_DETAILS": "Loading organization details...",
+    "LOADING_MILESTONES": "Loading milestones..."
   },
 
   "empty": {
     "THERE_IS_NO_ITEMS_TO_SHOW": "No items found to display.",
     "THERE_IS_NO_TASKS_TO_SHOW": "No tasks found to display.",
     "THERE_IS_NO_CREDENTIALS_TO_SHOW": "No credentials found to display.",
-    "THERE_IS_NO_ORGANIZATIONS_TO_SHOW": "No organizations found to display."
+    "THERE_IS_NO_ORGANIZATIONS_TO_SHOW": "No organizations found to display.",
+    "THERE_IS_NO_MILESTONES_TO_SHOW": "No milestones found to display."
   },
 
   "pages": {
@@ -72,9 +111,10 @@
     },
 
     "description": {
-      "TASKS": "Track your activity history and the progress of ongoing operations.",
+      "TASKS": "Track the history and progress of your past and ongoing tasks.",
       "CREDENTIALS": "Manage registered credentials or create new ones for your projects.",
-      "ORGANIZATIONS": "Manage your organizations or create new ones for your projects."
+      "ORGANIZATIONS": "Manage your organizations or create new ones for your projects.",
+      "ORGANIZATION_DETAILS": "Organization linked to the {{scope}} {{target}}."
     }
   },
 
@@ -99,20 +139,26 @@
       "CREDENTIAL": "Credential",
       "SCOPE": "Scope",
       "TARGET_PROJECT": "Target project",
-      "TARGET_GROUP": "Target group"
+      "TARGET_GROUP": "Target group",
+      "MILESTONE": "Milestone",
+      "ENABLE_MILESTONE_AUTO_SYNCRONIZATION": "Enable auto-synchronization",
+      "FREQUENCY": "Frequency",
+      "TIME": "Time",
+      "WEEK_DAY": "Weekday"
     },
 
     "placeholders": {
-      "CREDENTIAL_FANTASY_NAME": "E.g., My Credential",
+      "CREDENTIAL_FANTASY_NAME": "e.g. My Credential",
       "CREDENTIAL_PROVIDER_URL": "https://gitlab.com",
       "CREDENTIAL_TOKEN": "glpat-****",
-      "ORGANIZATION_FANTASY_NAME": "E.g., My Organization"
+      "ORGANIZATION_FANTASY_NAME": "e.g. My Organization"
     },
 
     "errors": {
       "THERE_IS_NO_CREDENTIALS_TO_SHOW": "No credentials found to display.",
       "THERE_IS_NO_AVAILABLE_SCOPE_TYPES": "No available scopes found to display.",
-      "THERE_IS_NO_AVAILABLE_TARGETS_TO_SHOW": "No target projects or groups found to display."
+      "THERE_IS_NO_AVAILABLE_TARGETS_TO_SHOW": "No projects or groups found to display.",
+      "THERE_IS_NO_MILESTONES_TO_SHOW": "No milestones found to display."
     },
 
     "feedbacks": {
@@ -123,9 +169,11 @@
   },
 
   "messages": {
-    "CREATE_CREDENTIALS_MESSAGE_SUCCESS": "Attention, user! Your credential creation request was successfully submitted. You can track the progress in the Tasks menu.",
-    "CREATE_CREDENTIALS_MESSAGE_ERROR": "Attention, user! An error occurred during your credential creation request. You can check details in the Tasks menu.",
-    "CREATE_ORGANIZATION_MESSAGE_SUCCESS": "Attention, user! Your organization creation request was successfully submitted. You can track the progress in the Tasks menu.",
-    "CREATE_ORGANIZATION_MESSAGE_ERROR": "Attention, user! An error occurred during your organization creation request. You can check details in the Tasks menu."
+    "CREATE_CREDENTIALS_MESSAGE_SUCCESS": "Attention, user! Your credential registration request was successfully submitted. You can track its progress in the Tasks menu.",
+    "CREATE_CREDENTIALS_MESSAGE_ERROR": "Attention, user! An error occurred while submitting your credential registration request. You can check details in the Tasks menu.",
+    "CREATE_ORGANIZATION_MESSAGE_SUCCESS": "Attention, user! Your request to create an organization was successfully submitted. You can track its progress in the Tasks menu.",
+    "CREATE_ORGANIZATION_MESSAGE_ERROR": "Attention, user! An error occurred while submitting your request to create an organization. You can check details in the Tasks menu.",
+    "SYNCHRONIZE_MILESTONE_MESSAGE_SUCCESS": "Attention, user! Your milestone synchronization request was successfully submitted. You can track its progress in the Tasks menu.",
+    "SYNCHRONIZE_MILESTONE_MESSAGE_ERROR": "Attention, user! An error occurred while submitting your milestone synchronization request. You can check details in the Tasks menu."
   }
 }

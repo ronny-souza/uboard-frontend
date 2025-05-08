@@ -16,6 +16,11 @@
   }
 }
 
+.administrator-actions {
+  display: flex;
+  gap: 10px;
+}
+
 .closing-room {
   display: flex;
   justify-content: center;
@@ -34,7 +39,3 @@
   flex-wrap: wrap;
 }
 
-.administrator-actions {
-  display: flex;
-  gap: 10px;
-}
