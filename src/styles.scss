@@ -30,6 +30,8 @@
   --p-floatlabel-focus-color: var(--primary) !important;
   --p-select-option-selected-focus-background: var(--primary) !important;
   --p-select-option-selected-focus-color: var(--white) !important;
+  --p-toggleswitch-checked-background: var(--primary) !important;
+  --p-toggleswitch-checked-hover-background: var(--primary-hover) !important;
 
   @include mat.snack-bar-overrides(
     (

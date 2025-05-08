@@ -86,6 +86,7 @@ html {
   --mat-sys-error-container: light-dark(#ffdad6, #93000a);
   --mat-sys-on-error-container: light-dark(#410002, #ffdad6);
 
+
   /* Neutral variant palette variables */
   --mdc-filled-text-field-container-color: light-dark(#f4f1f2, #f4f1f2);
   --mat-sys-surface-variant: light-dark(#ffdbd0, #59413a);
@@ -95,7 +96,7 @@ html {
     #412b24
   ); /* Variable used for the sidenav scrim (container background shadow when opened) */
 
-  --mat-icon-color: light-dark(#fff, #FFF);
+  --mat-icon-color: light-dark(#fe6c38, #fe6c38);
   --mat-icon-color-primary: light-dark(#fe6c38, #fff);
 
   --mat-filled-button-icon-spacing: 0;
