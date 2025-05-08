@@ -1,0 +1,15 @@
+<div class="room-actions">
+  <mat-nav-list>
+    @for (item of items; track $index) {
+    <a mat-list-item (click)="choseAction(item.action)">
+      <span matListItemTitle class="title"
+        ><mat-icon class="action-icon">{{ item.icon }}</mat-icon>
+        {{ item.titleTranslateKey | translate }}</span
+      >
+      <span matLine class="line">{{
+        item.descriptionTranslateKey | translate
+      }}</span>
+    </a>
+    }
+  </mat-nav-list>
+</div>
