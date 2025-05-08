@@ -1,0 +1,125 @@
+<p-dialog
+  [(visible)]="isVisible"
+  [modal]="true"
+  [style]="{ width: '40rem' }"
+  header="{{ 'actions.IMPORT_MILESTONE' | translate }}"
+>
+  <form [formGroup]="synchronizeMilestoneForm">
+    <div class="synchronize-milestone-form-body">
+      <div class="form-item">
+        <label for="milestone"
+          >{{ "forms.labels.MILESTONE" | translate }}
+          <mat-spinner diameter="16" *ngIf="isLoadingMilestones"></mat-spinner>
+        </label>
+        <p-select
+          [appendTo]="'body'"
+          [options]="availableMilestones"
+          placeholder="{{ 'commons.SELECT' | translate }}"
+          class="w-full md:w-56"
+          id="milestone"
+          optionLabel="title"
+          formControlName="milestone"
+        />
+        @if (synchronizeMilestoneForm.get('milestone')?.hasError('required')) {
+        <p class="form-field-error">
+          {{ "forms.MANDATORY_FIELD" | translate }}
+        </p>
+        } @if ( availableMilestones.length === 0) {
+        <p class="form-field-error">
+          {{ "forms.errors.THERE_IS_NO_MILESTONES_TO_SHOW" | translate }}
+        </p>
+        }
+      </div>
+      <div class="form-item toggle">
+        <p-toggleswitch id="isAutoSync" formControlName="isAutoSync" />
+        <label for="isAutoSync">{{
+          "forms.labels.ENABLE_MILESTONE_AUTO_SYNCRONIZATION" | translate
+        }}</label>
+      </div>
+
+      <div
+        class="form-item"
+        *ngIf="synchronizeMilestoneForm.get('isAutoSync')?.value"
+      >
+        <label for="frequency"
+          >{{ "forms.labels.FREQUENCY" | translate }}
+        </label>
+        <p-select
+          [appendTo]="'body'"
+          [options]="availableFrequencies"
+          placeholder="{{ 'commons.SELECT' | translate }}"
+          class="w-full md:w-56"
+          id="frequency"
+          optionLabel="label"
+          optionValue="value"
+          formControlName="frequency"
+          (onChange)="onChangeFrequency()"
+        />
+      </div>
+
+      <div class="group-form-item">
+        <div
+          class="form-item"
+          *ngIf="
+            synchronizeMilestoneForm.get('isAutoSync')?.value &&
+            synchronizeMilestoneForm.get('frequency')?.value === 'ONCE_A_WEEK'
+          "
+        >
+          <label for="weekDay"
+            >{{ "forms.labels.WEEK_DAY" | translate }}
+          </label>
+          <p-select
+            [appendTo]="'body'"
+            [options]="availableWeekDays"
+            placeholder="{{ 'commons.SELECT' | translate }}"
+            class="w-full md:w-56"
+            id="weekDay"
+            optionLabel="label"
+            optionValue="value"
+            formControlName="weekDay"
+            (onChange)="onChangeFrequency()"
+          />
+        </div>
+
+        <div
+          class="form-item"
+          *ngIf="
+            synchronizeMilestoneForm.get('isAutoSync')?.value &&
+            (synchronizeMilestoneForm.get('frequency')?.value === 'EVERY_DAY' ||
+              synchronizeMilestoneForm.get('frequency')?.value ===
+                'ONCE_A_WEEK')
+          "
+        >
+          <label for="time">{{ "forms.labels.TIME" | translate }} </label>
+          <p-datepicker
+            inputId="time"
+            formControlName="time"
+            [timeOnly]="true"
+            [appendTo]="'body'"
+          />
+        </div>
+      </div>
+    </div>
+  </form>
+  <ng-template #footer>
+    <p-button
+      label="{{ 'commons.CANCEL' | translate }}"
+      [text]="true"
+      severity="secondary"
+      (click)="closeDialog()"
+    />
+    <p-button
+      label="{{ 'commons.SAVE' | translate }}"
+      [outlined]="false"
+      severity="primary"
+      (click)="synchronizeMilestone()"
+      [disabled]="
+        availableMilestones.length == 0 ||
+        !synchronizeMilestoneForm.valid ||
+        synchronizeMilestoneForm.get('milestone')?.value?.id === 0 ||
+        (synchronizeMilestoneForm.get('isAutoSync')?.value &&
+          synchronizeMilestoneForm.get('frequency')?.value === 'NONE')
+      "
+    />
+  </ng-template>
+</p-dialog>
