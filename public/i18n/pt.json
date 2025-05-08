@@ -15,7 +15,10 @@
     "PROGRESS": "Progresso",
     "STATUS": "Status",
     "CREATED_AT": "Criado(a) em",
+    "UPDATED_AT": "Atualizado(a) em",
     "FINISHED_AT": "Finalizado(a) em",
+    "DUE_AT": "Prazo",
+    "LAST_UPDATE_AT": "Última atualização",
     "SELECT": "Selecione",
     "NAME": "Nome",
     "URL": "URL",
@@ -30,17 +33,50 @@
     "SCOPE": "Escopo",
     "GITHUB": "Github",
     "GITLAB": "Gitlab",
-    "PROVIDER_TYPE": "Tipo do provedor"
+    "PROVIDER_TYPE": "Tipo do provedor",
+    "BACK": "Voltar",
+    "TOTAL_ISSUES_COUNT": "Atividades",
+    "TOTAL_ISSUES_OPENED": "Atividades em aberto",
+    "TOTAL_ISSUES_CLOSED": "Atividades finalizadas",
+    "MILESTONES": "Milestones",
+    "ACTIVE": "Ativo(a)",
+    "CLOSED": "Fechado(a)",
+    "PROJECT_LOWER_CASE": "projeto",
+    "GROUP_LOWER_CASE": "grupo",
+    "EVERY_30_MINUTES": "A cada 30 minutos",
+    "EVERY_HOUR": "A cada hora",
+    "EVERY_3_HOURS": "A cada 3 horas",
+    "EVERY_6_HOURS": "A cada 6 horas",
+    "EVERY_12_HOURS": "A cada 12 horas",
+    "EVERY_DAY": "Uma vez ao dia",
+    "ONCE_A_WEEK": "Uma vez por semana",
+    "SUNDAY": "Domingo",
+    "MONDAY": "Segunda-feira",
+    "TUESDAY": "Terça-feira",
+    "WEDNESDAY": "Quarta-feira",
+    "THURSDAY": "Quinta-feira",
+    "FRIDAY": "Sexta-feira",
+    "SATURDAY": "Sábado"
   },
 
   "actions": {
     "NEW_CREDENTIAL": "Nova credencial",
-    "NEW_ORGANIZATION": "Nova organização"
+    "NEW_ORGANIZATION": "Nova organização",
+    "DELETE_ORGANIZATION": "Excluir organização",
+    "SYNCHRONIZE_MILESTONE": "Sincronizar milestone",
+    "IMPORT_MILESTONE": "Importar milestone",
+
+    "description": {
+      "DELETE_ORGANIZATION_DESCRIPTION": "Remova permanentemente a organização e seus dados associados.",
+      "SYNCHRONIZE_MILESTONE_DESCRIPTION": "Sincronize as informações da milestone e suas atividades diretamente do provedor."
+    }
   },
 
   "tasks": {
     "CREATE_CREDENTIAL": "Criar credencial",
-    "CREATE_ORGANIZATION": "Criar organização"
+    "CREATE_ORGANIZATION": "Criar organização",
+    "SYNCHRONIZE_MILESTONE": "Sincronizar milestone",
+    "IMPORT_MILESTONE": "Importar milestone"
   },
 
   "status": {
@@ -54,14 +90,17 @@
   "loading": {
     "LOADING_TASKS": "Carregando tarefas...",
     "LOADING_CREDENTIALS": "Carregando credenciais...",
-    "LOADING_ORGANIZATIONS": "Carregando organizações..."
+    "LOADING_ORGANIZATIONS": "Carregando organizações...",
+    "LOADING_ORGANIZATION_DETAILS": "Carregando informações da organização...",
+    "LOADING_MILESTONES": "Carregando milestones..."
   },
 
   "empty": {
     "THERE_IS_NO_ITEMS_TO_SHOW": "Não foram encontrados itens para exibir.",
     "THERE_IS_NO_TASKS_TO_SHOW": "Não foram encontradas tarefas para exibir.",
     "THERE_IS_NO_CREDENTIALS_TO_SHOW": "Não foram encontradas credenciais para exibir.",
-    "THERE_IS_NO_ORGANIZATIONS_TO_SHOW": "Não foram encontradas organizações para exibir."
+    "THERE_IS_NO_ORGANIZATIONS_TO_SHOW": "Não foram encontradas organizações para exibir.",
+    "THERE_IS_NO_MILESTONES_TO_SHOW": "Não foram encontradas milestones para exibir."
   },
 
   "pages": {
@@ -74,7 +113,8 @@
     "description": {
       "TASKS": "Acompanhe seu histórico de atividades anteriores e o progresso de suas atividades em execução.",
       "CREDENTIALS": "Gerencie as credenciais cadastradas, ou crie novas credenciais para seus projetos.",
-      "ORGANIZATIONS": "Gerencie suas organizações, ou crie novas para seus projetos."
+      "ORGANIZATIONS": "Gerencie suas organizações, ou crie novas para seus projetos.",
+      "ORGANIZATION_DETAILS": "Organização vinculada ao {{scope}} {{target}}."
     }
   },
 
@@ -99,7 +139,12 @@
       "CREDENTIAL": "Credencial",
       "SCOPE": "Escopo",
       "TARGET_PROJECT": "Projeto-alvo",
-      "TARGET_GROUP": "Grupo-alvo"
+      "TARGET_GROUP": "Grupo-alvo",
+      "MILESTONE": "Milestone",
+      "ENABLE_MILESTONE_AUTO_SYNCRONIZATION": "Habilitar sincronização automática",
+      "FREQUENCY": "Frequência",
+      "TIME": "Horário",
+      "WEEK_DAY": "Dia da semana"
     },
 
     "placeholders": {
@@ -112,7 +157,8 @@
     "errors": {
       "THERE_IS_NO_CREDENTIALS_TO_SHOW": "Não foram encontradas credenciais para exibir.",
       "THERE_IS_NO_AVAILABLE_SCOPE_TYPES": "Não foram encontrados escopos disponíveis para exibir.",
-      "THERE_IS_NO_AVAILABLE_TARGETS_TO_SHOW": "Não foram encontrados projetos ou grupos-alvo para exibir."
+      "THERE_IS_NO_AVAILABLE_TARGETS_TO_SHOW": "Não foram encontrados projetos ou grupos-alvo para exibir.",
+      "THERE_IS_NO_MILESTONES_TO_SHOW": "Não foram encontradas milestones para exibir."
     },
 
     "feedbacks": {
@@ -126,6 +172,8 @@
     "CREATE_CREDENTIALS_MESSAGE_SUCCESS": "Atenção, usuário! Sua solicitação para registro de credencial foi enviada com sucesso. Você pode acompanhar o progresso no menu Tarefas.",
     "CREATE_CREDENTIALS_MESSAGE_ERROR": "Atenção, usuário! Houve um erro em sua solicitação para registro de credencial. Você pode acompanhar detalhes no menu Tarefas.",
     "CREATE_ORGANIZATION_MESSAGE_SUCCESS": "Atenção, usuário! Sua solicitação para a criação de uma organização foi enviada com sucesso. Você pode acompanhar o progresso no menu Tarefas.",
-    "CREATE_ORGANIZATION_MESSAGE_ERROR": "Atenção, usuário! Houve um erro em sua solicitação para a criação de uma organização. Você pode acompanhar detalhes no menu Tarefas."
+    "CREATE_ORGANIZATION_MESSAGE_ERROR": "Atenção, usuário! Houve um erro em sua solicitação para a criação de uma organização. Você pode acompanhar detalhes no menu Tarefas.",
+    "SYNCHRONIZE_MILESTONE_MESSAGE_SUCCESS": "Atenção, usuário! Sua solicitação para a sincronização da milestone foi enviada com sucesso. Você pode acompanhar o progresso no menu Tarefas.",
+    "SYNCHRONIZE_MILESTONE_MESSAGE_ERROR": "Atenção, usuário! Houve um erro em sua solicitação para a sincronização da milestone. Você pode acompanhar detalhes no menu Tarefas."
   }
 }
