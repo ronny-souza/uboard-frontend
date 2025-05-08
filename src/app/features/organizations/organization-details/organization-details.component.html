@@ -1,1 +1,209 @@
-<p>organization-details works!</p>
+<section class="container" *ngIf="isOrganizationAvailable">
+  <div class="margin-bottom">
+    <app-uboard-button-with-icon
+      label="commons.BACK"
+      buttonStyle="primary"
+      icon="arrow_back"
+      (click)="backToOrganizations()"
+    />
+  </div>
+  <div class="header-items">
+    <div>
+      <app-uboard-page-title
+        titleTranslateKey="{{ organization.name }}"
+        descriptionTranslateKey="pages.description.ORGANIZATION_DETAILS"
+        [descriptionParams]="{
+          scope:
+            'commons.' + organization.integration.scope + '_LOWER_CASE'
+            | translate,
+          target: organization.integration.providerName
+        }"
+      />
+    </div>
+    <div class="administrator-actions">
+      <app-uboard-button-with-icon
+        label="commons.ACTIONS"
+        buttonStyle="primary"
+        icon="arrow_drop_down"
+        (click)="openBottomSheet()"
+      />
+    </div>
+  </div>
+
+  <div class="milestones-table">
+    <p-card>
+      <div class="milestones-header">
+        <div>
+          <h2>{{ "commons.MILESTONES" | translate }}</h2>
+        </div>
+        <div class="table-actions">
+          <app-uboard-button-with-icon
+            label="actions.IMPORT_MILESTONE"
+            buttonStyle="primary"
+            icon="download"
+            (click)="openSynchronizeMilestoneDialog()"
+          />
+
+          <app-uboard-button-with-icon
+            label="commons.REFRESH"
+            buttonStyle="primary"
+            icon="cached"
+            (click)="refreshMilestonesTable()"
+          />
+
+          <!-- <app-uboard-button-with-icon
+            label="commons.DELETE"
+            buttonStyle="danger"
+            icon="delete"
+            (click)="deleteCredentials()"
+            *ngIf="selectedCredentials && selectedCredentials.length > 0"
+          /> -->
+        </div>
+      </div>
+      <p-table
+        [value]="milestones"
+        [lazy]="true"
+        dataKey="uuid"
+        [paginator]="true"
+        [rows]="milestonesPageSize"
+        [rowsPerPageOptions]="[5, 10, 25, 50]"
+        [totalRecords]="milestonesTotalElements"
+        (onLazyLoad)="listOrganizationMilestonesAsPage($event)"
+        [tableStyle]="{ 'min-width': '75rem' }"
+        [(selection)]="selectedMilestones"
+      >
+        <ng-template #header>
+          <tr>
+            <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
+            <th>{{ "commons.NAME" | translate }}</th>
+            <th>{{ "commons.STATUS" | translate }}</th>
+            <th>{{ "commons.CREATED_AT" | translate }}</th>
+            <th>{{ "commons.DUE_AT" | translate }}</th>
+            <th>{{ "commons.LAST_UPDATE_AT" | translate }}</th>
+            <th>{{ "commons.ACTIONS" | translate }}</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>
+              <p-columnFilter
+                field="name"
+                matchMode="contains"
+                [showMenu]="false"
+                [showClearButton]="true"
+                (onClear)="clearMilestoneFilter('title')"
+              >
+                <ng-template #filter let-value let-filter="filterCallback">
+                  <input
+                    type="text"
+                    pInputText
+                    [(ngModel)]="milestonesTableFilters.title"
+                    (ngModelChange)="updateMilestoneFilter('title', $event)"
+                    placeholder="{{ 'search.BY_NAME' | translate }}"
+                  />
+                </ng-template>
+              </p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                field="scope"
+                matchMode="equals"
+                [showMenu]="false"
+                (onClear)="clearMilestoneFilter('state')"
+              >
+                <ng-template #filter let-value let-filter="filterCallback">
+                  <p-select
+                    [appendTo]="'body'"
+                    [(ngModel)]="milestonesTableFilters.state"
+                    [options]="milestoneStates"
+                    (onChange)="updateMilestoneFilter('state', $event.value)"
+                    placeholder="{{ 'commons.SELECT' | translate }}"
+                    [showClear]="true"
+                  >
+                    <ng-template let-state #item>
+                      {{ "commons." + state | translate }}
+                    </ng-template>
+                  </p-select>
+                </ng-template>
+              </p-columnFilter>
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-milestone>
+          <tr
+            [routerLink]="['/milestones', milestone.uuid]"
+            routerLinkActive="active"
+            style="cursor: pointer"
+          >
+            <td>
+              <p-tableCheckbox
+                [value]="milestone"
+                (click)="$event.stopPropagation()"
+              />
+            </td>
+            <td>
+              {{ milestone.title }}
+            </td>
+            <td>
+              <p-badge
+                value="{{ 'commons.' + milestone.state | translate }}"
+                [severity]="defineStateBadgeClass(milestone.state)"
+              />
+            </td>
+            <td>
+              {{ milestone.createdAt | date : "dd/MM/yyyy" }}
+            </td>
+            <td>
+              {{ milestone.finishedAt | date : "dd/MM/yyyy" }}
+            </td>
+            <td>
+              {{ milestone.synchronizedAt | date : "dd/MM/yyyy HH:mm:ss" }}
+            </td>
+            <td>
+              <p-button
+                [text]="true"
+                pTooltip="{{ 'actions.SYNCHRONIZE_MILESTONE' | translate }}"
+                tooltipPosition="left"
+                (onClick)="synchronizeSingleMilestone(milestone)"
+                (click)="$event.stopPropagation()"
+              >
+                <mat-icon>cached</mat-icon>
+              </p-button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="8">
+              @if (!hasMilestones() && !isLoadingMilestones) {
+              <app-uboard-empty-table-warning
+                translateKey="empty.THERE_IS_NO_MILESTONES_TO_SHOW"
+              />
+              } @if (isLoadingMilestones) {
+              <app-uboard-spinner translateKey="loading.LOADING_MILESTONES" />
+              }
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+</section>
+
+@if (!isOrganizationAvailable && isLoadingOrganization) {
+<app-uboard-spinner translateKey="loading.LOADING_ORGANIZATION_DETAILS" />
+}
+
+<!-- SYNCHRONIZE MILESTONE DIALOG -->
+<section *ngIf="isOrganizationAvailable">
+  <app-synchronize-organization-milestone-dialog
+    [isVisible]="isSynchronizeMilestoneDialogVisible"
+    [organization]="organizationId"
+    (isSynchronizeMilestoneDialogOpened)="
+      isSynchronizeMilestoneDialogVisible = $event
+    "
+  />
+</section>
