@@ -44,3 +44,26 @@ Frontend da plataforma **Uboard**, uma aplicação Angular para gerenciamento de
 
 ```bash
 npm install
+```
+
+### Ambiente de desenvolvimento
+Configure o arquivo `environment.ts` com as variáveis do Keycloak e backend.
+
+```ts
+export const environment = {
+  production: false,
+  uboardApiUrl: 'http://localhost:8080',
+  webSocketUrl: 'ws://localhost:8080/ws',
+  keycloak: {
+    realm: 'uboard',
+    url: 'http://localhost:8181',
+    clientId: 'uboard-frontend',
+    urlConditionForBearerToken: /^(http:\/\/localhost:(8080|8181))(\/.*)?$/i,
+  },
+};
+```
+
+### Rodando localmente
+```bash
+ng serve
+```
