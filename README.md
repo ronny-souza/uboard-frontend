@@ -1,59 +1,46 @@
-# Uboard
+# Uboard – Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.5.
+Frontend da plataforma **Uboard**, uma aplicação Angular para gerenciamento de repositórios Git e realização de sessões de **Scrum Poker** com base em issues de milestones sincronizadas via GitLab (com suporte futuro para outros provedores como GitHub).
 
-## Development server
+## 🧰 Tecnologias Utilizadas
 
-To start a local development server, run:
+- Angular 19
+- TypeScript
+- ngx-translate (internacionalização dinâmica)
+- Angular Router Guards
+- Angular Material
+- WebSocket (sessões de votação em tempo real)
+- RxJS
+- Tailwind CSS (opcional)
+- Keycloak (OAuth2)
 
-```bash
-ng serve
-```
+## 📦 Funcionalidades
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Autenticação via Keycloak
+- Gerenciamento de credenciais (tokens GitLab/GitHub)
+- Criação de organizações
+- Sincronização de milestones e issues
+- Página de tarefas assíncronas com atualização em tempo real
+- Salas de votação com Scrum Poker
+- Filtros dinâmicos e paginação em todas as tabelas
+- Internacionalização completa dos componentes
 
-## Code scaffolding
+## 🔐 Segurança
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Proteção de rotas com guards
+- Tokens armazenados com segurança (no backend, via Vault)
+- Autenticação e autorização integradas com Keycloak
 
-```bash
-ng generate component component-name
-```
+## 🚀 Rodando o projeto
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Pré-requisitos
 
-```bash
-ng generate --help
-```
+- Node.js v18+
+- Angular CLI
+- Keycloak em execução e configurado
+- Backend Uboard rodando
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+### Instalação
 
 ```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+npm install
