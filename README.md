@@ -67,3 +67,6 @@ export const environment = {
 ```bash
 ng serve
 ```
+
+## 📄 Licença
+Este projeto é proprietário. Consulte o arquivo LICENSE para mais informações.
