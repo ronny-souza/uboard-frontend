@@ -172,6 +172,16 @@
               >
                 <mat-icon>cached</mat-icon>
               </p-button>
+
+              <p-button
+                [text]="true"
+                pTooltip="{{ 'actions.CREATE_SCRUM_POKER_ROOM' | translate }}"
+                tooltipPosition="left"
+                (onClick)="openCreateScrumPokerRoomDialog(milestone)"
+                (click)="$event.stopPropagation()"
+              >
+                <mat-icon>scoreboard</mat-icon>
+              </p-button>
             </td>
           </tr>
         </ng-template>
@@ -205,5 +215,18 @@
     (isSynchronizeMilestoneDialogOpened)="
       isSynchronizeMilestoneDialogVisible = $event
     "
+  />
+</section>
+
+<!-- CREATE SCRUM POKER ROOM IN MILESTONE DIALOG -->
+<section *ngIf="isOrganizationAvailable">
+  <app-create-scrum-poker-room-dialog
+    [isVisible]="isCreateScrumPokerRoomDialogVisible"
+    [organization]="organizationId"
+    [milestone]="currentMilestone"
+    (isCreateScrumPokerRoomDialogOpened)="
+      isCreateScrumPokerRoomDialogVisible = $event
+    "
+    (scrumPokerRoomData)="redirectToScrumPokerRoom($event)"
   />
 </section>

@@ -1,0 +1,31 @@
+.form-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 3%;
+
+  label {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+  }
+}
+
+.create-scrum-poker-room-form-body {
+  margin-top: 3%;
+  width: 100%;
+
+  input,
+  p-select,
+  p-datepicker,
+  .pinputtext {
+    width: 100% !important;
+  }
+}
+
+.form-field-error {
+  font-size: 14px !important;
+  color: var(--mat-sys-error);
+  margin-bottom: 2%;
+}

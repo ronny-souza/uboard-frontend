@@ -65,6 +65,7 @@
     "DELETE_ORGANIZATION": "Delete organization",
     "SYNCHRONIZE_MILESTONE": "Synchronize milestone",
     "IMPORT_MILESTONE": "Import milestone",
+    "CREATE_SCRUM_POKER_ROOM":"Start scrum poker room",
 
     "description": {
       "DELETE_ORGANIZATION_DESCRIPTION": "Permanently remove the organization and its associated data.",
@@ -144,14 +145,16 @@
       "ENABLE_MILESTONE_AUTO_SYNCRONIZATION": "Enable auto-synchronization",
       "FREQUENCY": "Frequency",
       "TIME": "Time",
-      "WEEK_DAY": "Weekday"
+      "WEEK_DAY": "Weekday",
+      "SCRUM_POKER_ROOM_NAME":"Scrum poker room name"
     },
 
     "placeholders": {
       "CREDENTIAL_FANTASY_NAME": "e.g. My Credential",
       "CREDENTIAL_PROVIDER_URL": "https://gitlab.com",
       "CREDENTIAL_TOKEN": "glpat-****",
-      "ORGANIZATION_FANTASY_NAME": "e.g. My Organization"
+      "ORGANIZATION_FANTASY_NAME": "e.g. My Organization",
+      "SCRUM_POKER_ROOM_NAME":"e.g. My voting room"
     },
 
     "errors": {

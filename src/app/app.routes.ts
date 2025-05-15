@@ -4,7 +4,6 @@ import { LayoutComponent } from './core/layout/layout.component';
 import { SettingsComponent } from './features/settings/settings.component';
 import { CredentialsComponent } from './features/credentials/credentials.component';
 import { canActivateAuth } from './core/guards/auth.guard';
-import { RoomsComponent } from './features/scrum-poker/rooms/rooms.component';
 import { ScrumPokerRoomComponent } from './features/scrum-poker/scrum-poker-room/scrum-poker-room.component';
 import { TasksComponent } from './features/tasks/tasks.component';
 import { OrganizationsComponent } from './features/organizations/organizations.component';
@@ -46,12 +45,7 @@ export const routes: Routes = [
         component: SettingsComponent,
       },
       {
-        path: 'scrum-poker/rooms',
-        component: RoomsComponent,
-      },
-
-      {
-        path: 'scrum-poker/rooms/:roomId',
+        path: 'organizations/:organizationId/milestones/:milestoneId/scrum-poker-rooms/:roomId',
         component: ScrumPokerRoomComponent,
       },
     ],

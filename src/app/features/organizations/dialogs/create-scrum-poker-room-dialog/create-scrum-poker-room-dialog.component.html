@@ -1,0 +1,46 @@
+<p-dialog
+  [(visible)]="isVisible"
+  [modal]="true"
+  [style]="{ width: '40rem' }"
+  header="{{ 'actions.CREATE_SCRUM_POKER_ROOM' | translate }}"
+  (onHide)="closeDialog()"
+>
+  <form [formGroup]="createScrumPokerRoomForm">
+    <div class="create-scrum-poker-room-form-body">
+      <div class="form-item">
+        <label for="name">{{
+          "forms.labels.SCRUM_POKER_ROOM_NAME" | translate
+        }}</label>
+        <input
+          pInputText
+          id="name"
+          formControlName="name"
+          autocomplete="off"
+          placeholder="{{
+            'forms.placeholders.SCRUM_POKER_ROOM_NAME' | translate
+          }}"
+        />
+        @if (createScrumPokerRoomForm.get('name')?.hasError('required')) {
+        <p class="form-field-error">
+          {{ "forms.MANDATORY_FIELD" | translate }}
+        </p>
+        }
+      </div>
+    </div>
+  </form>
+  <ng-template #footer>
+    <p-button
+      label="{{ 'commons.CANCEL' | translate }}"
+      [text]="true"
+      severity="secondary"
+      (click)="closeDialog()"
+    />
+    <p-button
+      label="{{ 'commons.SAVE' | translate }}"
+      [outlined]="false"
+      severity="primary"
+      (click)="createScrumPokerRoom()"
+      [disabled]="!createScrumPokerRoomForm.valid"
+    />
+  </ng-template>
+</p-dialog>
