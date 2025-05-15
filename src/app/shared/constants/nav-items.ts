@@ -12,11 +12,6 @@ export const NAV_ITEMS: NavItem[] = [
     href: '/organizations',
   },
   {
-    label: 'VOTING',
-    icon: 'scoreboard',
-    href: '/scrum-poker/rooms',
-  },
-  {
     label: 'CREDENTIALS',
     icon: 'vpn_key',
     href: '/credentials',
