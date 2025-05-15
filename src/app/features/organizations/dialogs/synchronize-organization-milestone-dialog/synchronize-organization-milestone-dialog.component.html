@@ -3,6 +3,7 @@
   [modal]="true"
   [style]="{ width: '40rem' }"
   header="{{ 'actions.IMPORT_MILESTONE' | translate }}"
+  (onHide)="closeDialog()"
 >
   <form [formGroup]="synchronizeMilestoneForm">
     <div class="synchronize-milestone-form-body">
