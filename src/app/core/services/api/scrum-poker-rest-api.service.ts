@@ -1,3 +1,4 @@
+import { CreateScrumPokerRoomForm } from './../../models/scrum-poker-rooms/create-scrum-poker-room.model';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -25,10 +26,9 @@ export class ScrumPokerRestApiService {
     );
   }
 
-  createScrumPokerRoom(name: string): Observable<ScrumPokerRoomData> {
-    const body = {
-      name,
-    };
+  createScrumPokerRoom(
+    body: CreateScrumPokerRoomForm
+  ): Observable<ScrumPokerRoomData> {
     return this.httpClient.post<ScrumPokerRoomData>(
       `${this.baseUrl}/room`,
       body
