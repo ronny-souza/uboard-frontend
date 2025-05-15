@@ -26,6 +26,7 @@ import { Tooltip } from 'primeng/tooltip';
 import Swal from 'sweetalert2';
 import { SynchronizeMilestoneModel } from '../../../core/models/milestones/synchronize-milestone.model';
 import { SelectModule } from 'primeng/select';
+import { CreateScrumPokerRoomDialogComponent } from '../dialogs/create-scrum-poker-room-dialog/create-scrum-poker-room-dialog.component';
 
 @Component({
   selector: 'app-organization-details',
@@ -48,6 +49,7 @@ import { SelectModule } from 'primeng/select';
     BadgeModule,
     Tooltip,
     SelectModule,
+    CreateScrumPokerRoomDialogComponent,
   ],
   templateUrl: './organization-details.component.html',
   styleUrl: './organization-details.component.scss',
@@ -69,6 +71,9 @@ export class OrganizationDetailsComponent implements OnInit {
   };
 
   isSynchronizeMilestoneDialogVisible = false;
+  isCreateScrumPokerRoomDialogVisible = false;
+
+  currentMilestone: string = '';
 
   milestoneStates: string[] = ['ACTIVE', 'CLOSED'];
 
@@ -203,6 +208,24 @@ export class OrganizationDetailsComponent implements OnInit {
   }
 
   /** END ORGANIZATION MILESTONE PROPERTIES */
+
+  /** ORGANIZATION MILESTONE SCRUM POKER ROOMS PROPERTIES */
+  openCreateScrumPokerRoomDialog(milestone: MilestoneModel) {
+    this.currentMilestone = milestone.uuid;
+    this.isCreateScrumPokerRoomDialogVisible = true;
+  }
+
+  redirectToScrumPokerRoom(event: {
+    name: string;
+    uuid: string;
+    milestone: string;
+  }) {
+    this.router.navigate([
+      `/organizations/${this.organizationId}/milestones/${event.milestone}/scrum-poker-rooms/${event.uuid}`,
+    ]);
+  }
+
+  /** END ORGANIZATION MILESTONE SCRUM POKER ROOMS PROPERTIES */
 
   openBottomSheet() {
     const bottomSheetRef = this._bottomSheet.open(UboardBottomSheetComponent, {
