@@ -159,7 +159,7 @@ export class ScrumPokerRoomComponent implements OnInit {
         );
 
         setTimeout(() => {
-          this.router.navigate(['/scrum-poker/rooms']);
+          this.router.navigate([`/organizations`]);
         }, 5000);
       }
     });
@@ -183,7 +183,7 @@ export class ScrumPokerRoomComponent implements OnInit {
           'Atenção, usuário! A sala não existe ou foi fechada por seu administrador. Você será redirecionado de volta às suas salas.'
         );
         setTimeout(() => {
-          this.router.navigate(['/scrum-poker/rooms']);
+          this.router.navigate(['/organizations']);
         }, 5000);
       },
     });
@@ -230,7 +230,7 @@ export class ScrumPokerRoomComponent implements OnInit {
           );
 
           setTimeout(() => {
-            this.router.navigate(['/scrum-poker/rooms']);
+            this.router.navigate(['/organizations']);
           }, 5000);
         }
       }
